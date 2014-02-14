@@ -1,0 +1,18 @@
+body{
+	font-family: 'Fauna One', serif;
+}
+
+#moveHistory {
+	width: 300px;
+	float: left;
+}
+
+#diceAvailable {
+	width: 300px;
+	float: left;
+}
+
+#turnFormContainer {
+	width: 300px;
+	float: left;
+}
