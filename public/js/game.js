@@ -2,21 +2,11 @@ var queueUrl = window.urlPathPrefix + "/api/v1/queue";
 var gameUrl = window.urlPathPrefix + "/api/v1/game";
 var moveUrl = window.urlPathPrefix + "/api/v1/game/move";
 var playerOrder;
-console.log('here');
 
 $(document).ready(function(){
 	$('#turnForm').hide();
 	$('#turnForm').submit(function(){
-//		console.log();
-        $.ajax({
-            url: moveUrl,
-            type: "POST",
-            data: $(this).serialize(),
-            success: function(data){
-                console.log(data);
-            }, dataType: "json"
-        });
-
+        makeMove(this);
 		return false;
 	});
 });
@@ -33,7 +23,7 @@ setInterval(function(){
 				  	url: gameUrl,
 				  	success: function(game){
 				  		updateGame(game);
-				  		// console.log(game);
+//				  		console.log(game);
 				  	},
 				  	dataType: "json"
 				});
@@ -42,6 +32,16 @@ setInterval(function(){
 	});
 }, 5000);
 
+function makeMove(form){
+    $.ajax({
+        url: moveUrl,
+        type: "POST",
+        data: $(form).serialize(),
+        success: function(data){
+            console.log(data);
+        }, dataType: "json"
+    });
+}
 
 function updateGame(gameState){
 	if(gameState.playerOrder !== 'undefinded'){
@@ -55,6 +55,10 @@ function updateGame(gameState){
 	if(gameState.playersTurn !== 'undefinded'){
 		updatePlayersTurn(gameState.playersTurn);
 	}
+
+    if(gameState.myDice !== 'undefinded'){
+        updateMyDice(gameState.myDice);
+    }
 	
 	if(gameState.moves !== 'undefinded'){
 		updateMoves(gameState.moves);
@@ -111,6 +115,14 @@ function updateMoves(moves){
 			$('#moveHistory').append(elementToAppend);
 		}
 	}
+}
+
+function updateMyDice(dice){
+    var message = "You rolled ";
+    $(dice).each(function(){
+        message += this[0] + " ";
+    });
+    $('#myDice').text(message);
 }
 
 function currentlyQueued(isQueued){

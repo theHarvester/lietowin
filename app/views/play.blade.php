@@ -8,7 +8,7 @@
     </script>
     <div class="container">
         <div id="output"></div>
-
+        <div id="myDice"></div>
         <div id="diceAvailable"></div>
         <div id="moveHistory"></div>
         <div id="currentlyQueued">You are in the queue, please wait while we find you a game.</div>
