@@ -1,0 +1,29 @@
+/* Colors */
+@color: #4D926F;
+@base: #FFA963;
+@complement1: spin(@base, 180);
+@complement2: darken(spin(@base, 180), 5%);
+@lighten1: lighten(@base, 15%);
+@lighten2: lighten(@base, 30%);
+
+
+/* Buttons */
+.btn_mixin {
+    background-color:@complement2;
+    text-indent:0;
+    border:0;
+    display:inline-block;
+    color:white;
+    height:50px;
+    line-height:50px;
+    padding: 0px 50px;
+    text-decoration:none;
+    text-align:center;
+}
+
+/* Border */
+.border-radius (@radius: 5px) {
+    -webkit-border-radius: @radius;
+    -moz-border-radius: @radius;
+    border-radius: @radius;
+}

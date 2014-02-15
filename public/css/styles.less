@@ -1,0 +1,203 @@
+@import "mixins.less";
+
+/* Easy Colors */
+.base { background-color:@base; }
+.complement1 { background-color:@complement1; }
+.complement2 { background-color:@complement2; }
+.lighten1 { background-color:@lighten1; }
+.lighten2 { background-color:@lighten2; }
+
+/* Buttons */
+
+.btn_submit input {
+    margin-top:20px;
+    .btn_mixin;
+}
+.btn_submit input:hover {
+    background-color:@complement1;
+}
+.btn_submit input:active {
+    position:relative;
+    top:1px;
+}
+
+/* Form */
+
+form input {
+    height:20px;
+    width:220px;
+    padding:5px 8px;
+}
+
+form .checkboxLabel {
+    margin-left: -90px;
+    z-index:-1;
+}
+
+/* Banners */
+
+.banner {
+    background-color:@base;
+    text-align: center;
+    background-size: cover;
+    height: 350px;
+    width: 100%;
+    margin-bottom: 3em;
+    display: table;
+}
+
+.banner-head {
+    display: table-cell;
+    vertical-align: middle;
+    margin-bottom: 0;
+    font-size: 4em;
+    color: white;
+    font-weight:100;
+}
+
+.information {
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+.information-head {
+    font-weight:normal;
+}
+
+/*
+.pure-menu.pure-menu-open.pure-menu-fixed {
+    background-color: @lighten2;
+}
+*/
+
+/* Menu Stuff */
+
+#menu-show-btn {
+    z-index:1001;
+    position:fixed;
+    margin:17px 4px;
+    cursor:pointer
+}
+
+/*
+#menu-show-btn:hover {
+    box-shadow: 0px 0px 5px #000;
+}
+*/
+
+#menu-container {
+    background:#7A7A7A url('../img/grey_wash_wall.png'); 
+    box-shadow: -1px 1px 10px #333 inset;
+    width: 300px; 
+    height: 100%; 
+    position:fixed;
+    display:none;
+    z-index:1000;
+}
+
+.menu-icon-bar {
+    background-color:white;
+    width:25px;
+    height:3px;
+    margin:5px;
+}
+
+#menu-title {
+    font-size: 3em;
+    color: white;
+    font-weight:100;
+    margin-right:20px;
+    text-align:right;
+}
+
+#menu-container ul {
+    list-style-type: none;
+}
+
+#menu-container a {
+    font-size: 2em;
+    color: white;
+    font-weight:100;
+}
+
+#menu-container a:hover {
+    text-decoration:none;
+    color:@base;
+}
+
+.orange {
+    background-color:@base;
+}
+.white {
+    background-color:white; 
+}
+
+/* List even and odd */
+
+.even {
+    background-color:@lighten1;
+}
+.odd {
+    background-color:@lighten2;
+}
+
+/* Edit list */
+
+ul.edit-list li {
+    padding:10px;
+}
+
+#edit-data {
+    display:none;
+    position:absolute;
+    z-index:"1010";
+    background-color:white;
+    padding:10px;
+}
+
+#edit-data input {
+    margin-bottom:10px;
+    padding:5px 8px;
+}
+
+#edit-charts {
+    display:none;
+    position:absolute;
+    z-index:"1010";
+    background-color:white;
+    padding:10px;
+}
+
+#edit-charts input {
+    margin-bottom:10px;
+    padding:5px 8px;
+}
+
+.edit-me {
+    cursor:text;
+}
+
+button {
+    .btn_mixin;
+}
+
+/* Media Queries */
+
+@media(max-width: 767px) {
+    .banner-head {
+        font-size: 3em;
+    }
+    .pricing-table {
+        margin-bottom: 2em;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .banner {
+        height: 200px;
+    }
+    .banner-head {
+        font-size: 2em;
+    }
+}

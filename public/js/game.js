@@ -1,12 +1,21 @@
-var queueUrl = "/apifight/public/api/v1/queue";
-var gameUrl = "/apifight/public/api/v1/game";
-var moveUrl = "/apifight/public/api/v1/game/move";
+var queueUrl = window.urlPathPrefix + "/api/v1/queue";
+var gameUrl = window.urlPathPrefix + "/api/v1/game";
+var moveUrl = window.urlPathPrefix + "/api/v1/game/move";
 var playerOrder;
+console.log('here');
 
 $(document).ready(function(){
 	$('#turnForm').hide();
 	$('#turnForm').submit(function(){
-		console.log($(this).serialize());
+//		console.log();
+        $.ajax({
+            url: moveUrl,
+            type: "POST",
+            data: $(this).serialize(),
+            success: function(data){
+                console.log(data);
+            }, dataType: "json"
+        });
 
 		return false;
 	});
@@ -16,7 +25,10 @@ setInterval(function(){
     $.ajax({ 
     	url: queueUrl, 
     	success: function(data){
-	        if(data.game_id !== 'undefinded'){
+            if(data.queued == true){
+                currentlyQueued(true);
+            } else if(data.game_id !== 'undefinded'){
+                currentlyQueued(false);
 	        	$.ajax({
 				  	url: gameUrl,
 				  	success: function(game){
@@ -99,6 +111,14 @@ function updateMoves(moves){
 			$('#moveHistory').append(elementToAppend);
 		}
 	}
+}
+
+function currentlyQueued(isQueued){
+    if(isQueued){
+        $('#currentlyQueued').show();
+    } else {
+        $('#currentlyQueued').hide();
+    }
 }
 
 // function submitMove()

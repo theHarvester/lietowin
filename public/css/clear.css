@@ -1,0 +1,38 @@
+a:link    {
+	text-decoration:  none;
+  	color: #fff;
+} 
+a:visited {
+  	text-decoration:  none;
+  	color: #fff;
+} 
+a:hover   {
+  	text-decoration:  underline;
+  	color: #fff;
+} 
+a:active  {
+  	text-decoration:  underline;
+  	color: #fff;
+} 
+
+.l-content a:link    {
+	text-decoration:  none;
+  	color: #FFA963;
+} 
+.l-content a:visited {
+  	text-decoration:  none;
+  	color: #FFA963;
+} 
+.l-content a:hover   {
+  	text-decoration:  underline;
+  	color: #FFA963;
+} 
+.l-content a:active  {
+  	text-decoration:  underline;
+  	color: #FFA963;
+} 
+
+.l-content ul {
+	list-style-type:none;
+	padding: 0;
+}

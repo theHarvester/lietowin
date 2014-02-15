@@ -1,0 +1,15 @@
+body {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	color: #45484A;
+}
+
+h2, h3 {
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    /* background-color: @complement1; */
+}
+
+p {
+    line-height: 1.6em;
+}
