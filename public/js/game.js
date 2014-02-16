@@ -9,6 +9,8 @@ var playerOrder;
 // ensures the round over animation is only done once
 var toggleRoundOver = false;
 
+var isNewRound = true;
+
 $(document).ready(function(){
 	$('#turnForm').hide();
 	$('#turnForm').submit(function(){
@@ -50,6 +52,10 @@ function makeMove(form){
 }
 
 function updateGame(gameState){
+    if(gameState.round !== 'undefinded'){
+        updateRound(gameState.round);
+    }
+
 	if(gameState.playerOrder !== 'undefinded'){
 		updatePlayerOrder(gameState.playerOrder);
 	}
@@ -70,13 +76,10 @@ function updateGame(gameState){
 		updateMoves(gameState.moves);
 	}
 
-    if(gameState.round !== 'undefinded'){
-        updateRound(gameState.round);
-    }
-
     if(gameState.lastRoundEnd !== 'undefinded'){
         roundEnd(gameState.lastRoundEnd);
     }
+    isNewRound = false;
 }
 
 function updateDiceAvailable(diceAvailable){
@@ -132,11 +135,37 @@ function updateMoves(moves){
 }
 
 function updateMyDice(dice){
-    var message = "You rolled ";
-    $(dice).each(function(){
-        message += this[0] + " ";
-    });
-    $('#myDice').text(message);
+    if(isNewRound){
+        $('#myDice').empty();
+
+        $(dice).each(function(){
+            var die = null;
+            switch (parseInt(this[0]))
+            {
+                case 1:
+                    die = $('#dice1').clone();
+                    break;
+                case 2:
+                    die = $('#dice2').clone();
+                    break;
+                case 3:
+                    die = $('#dice3').clone();
+                    break;
+                case 4:
+                    die = $('#dice4').clone();
+                    break;
+                case 5:
+                    die = $('#dice5').clone();
+                    break;
+                case 6:
+                    die = $('#dice6').clone();
+                    break;
+            }
+            die.removeAttr('id');
+            $('#myDice').append(die);
+        });
+    }
+//    .text(message);
 }
 
 function currentlyQueued(isQueued){
@@ -150,6 +179,7 @@ function currentlyQueued(isQueued){
 function updateRound(round){
     if(round != currentRound){
         toggleRoundOver = true;
+        isNewRound = true;
     }
     currentRound = round;
 }
@@ -193,6 +223,3 @@ function revealDice(dice){
     });
     $('#roundResult').append(appendMe);
 }
-
-
-// function submitMove()
