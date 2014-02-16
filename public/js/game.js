@@ -1,9 +1,13 @@
 var queueUrl = window.urlPathPrefix + "/api/v1/queue";
 var gameUrl = window.urlPathPrefix + "/api/v1/game";
 var moveUrl = window.urlPathPrefix + "/api/v1/game/move";
+var lastDiceUrl = window.urlPathPrefix + "/api/v1/game/dice";
 var currentRound = 1;
 var lastCelebratedRound = 0;
 var playerOrder;
+
+// ensures the round over animation is only done once
+var toggleRoundOver = false;
 
 $(document).ready(function(){
 	$('#turnForm').hide();
@@ -25,16 +29,16 @@ setInterval(function(){
 				  	url: gameUrl,
 				  	success: function(game){
 				  		updateGame(game);
-//				  		console.log(game);
 				  	},
 				  	dataType: "json"
 				});
 	        }
     	}, dataType: "json"
 	});
-}, 5000);
+}, 2000);
 
 function makeMove(form){
+    $('#turnForm').hide();
     $.ajax({
         url: moveUrl,
         type: "POST",
@@ -70,14 +74,9 @@ function updateGame(gameState){
         updateRound(gameState.round);
     }
 
-    if(currentRound > 1){
-//        console.log(currentRound - 2 >= lastCelebratedRound, gameState.lastRoundEnd);
-        if(currentRound - 2 >= lastCelebratedRound && gameState.lastRoundEnd){
-            roundEnd(gameState.lastRoundEnd);
-        }
+    if(gameState.lastRoundEnd !== 'undefinded'){
+        roundEnd(gameState.lastRoundEnd);
     }
-
-//    console.log(currentRound );
 }
 
 function updateDiceAvailable(diceAvailable){
@@ -102,7 +101,7 @@ function updateDiceAvailable(diceAvailable){
 }
 
 function updatePlayersTurn(player){
-	if(player == window.username){
+	if(player == username){
 		// it's your turn
 		$('#turnForm').show();
 	} else {
@@ -149,16 +148,51 @@ function currentlyQueued(isQueued){
 }
 
 function updateRound(round){
-    window.currentRound = round;
+    if(round != currentRound){
+        toggleRoundOver = true;
+    }
+    currentRound = round;
 }
 
 function roundEnd(lastRound){
-//    console.log(lastRound);
-    if(lastRound.player == lastRound.loser){
-        $('#roundResult').text(lastRound.loser + ' called ' + lastRound.call + ' and lost.');
-    } else {
-        $('#roundResult').text(lastRound.player + ' called ' + lastRound.call + ' on ' + lastRound.loser + ' and won.');
+    if(currentRound > 1 && toggleRoundOver){
+        if(currentRound - 2 >= lastCelebratedRound){
+            //the round is definitely over
+            $('#moveHistory').empty();
+
+            $('#roundResult').empty();
+            $('#roundResult').show();
+            $.ajax({
+                url: lastDiceUrl,
+                success: function(data){
+                    if(data.previousDice != 'undefined'){
+                        revealDice(data.previousDice);
+                    }
+
+                }, dataType: "json"
+            });
+
+            if(lastRound.player == lastRound.loser){
+                $('#roundResult').text(lastRound.loser + ' called ' + lastRound.call + ' and lost.');
+            } else {
+                $('#roundResult').text(lastRound.player + ' called ' + lastRound.call + ' on ' + lastRound.loser + ' and won.');
+            }
+
+            toggleRoundOver = false;
+            $('#roundResult').delay(20000).hide(1000);
+        }
     }
 }
+
+function revealDice(dice){
+    var appendMe = "<br />Last Rounds dice:<br />";
+    $(dice).each(function(){
+        console.log(this);
+        appendMe += this.username + " ";
+        appendMe += this.dice.join(', ') + "<br />";
+    });
+    $('#roundResult').append(appendMe);
+}
+
 
 // function submitMove()

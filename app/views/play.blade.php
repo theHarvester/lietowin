@@ -6,7 +6,7 @@
     <script type="text/javascript">
         var username = "{{ $username }}";
     </script>
-    <div class="container">
+    <div id="body-container">
         <div id="output"></div>
         <div id="myDice"></div>
         <div id="diceAvailable"></div>

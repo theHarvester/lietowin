@@ -2,17 +2,32 @@ body{
 	font-family: 'Fauna One', serif;
 }
 
-#moveHistory {
-	width: 300px;
-	float: left;
-}
 
+#output {
+    /*border-style: solid;*/
+    /*border-width:1px;*/
+}
+#myDice {
+    border-style: solid;
+    border-width:1px;
+}
 #diceAvailable {
-	width: 300px;
-	float: left;
+    border-style: solid;
+    border-width:1px;
 }
-
+#moveHistory {
+    border-style: solid;
+    border-width:1px;
+}
+#currentlyQueued {
+    border-style: solid;
+    border-width:1px;
+}
+#roundResult {
+    border-style: solid;
+    border-width:1px;
+}
 #turnFormContainer {
-	width: 300px;
-	float: left;
+    border-style: solid;
+    border-width:1px;
 }

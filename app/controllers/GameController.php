@@ -52,7 +52,7 @@ class GameController extends BaseController {
 					->where('round', $game['current_round'])
 					->where('user_id', $userId)
 					->first();
-				
+
 				$myDiceFace = explode(',', $myDice['dice_face']);
 
 				// get all players amount of dice
@@ -102,6 +102,42 @@ class GameController extends BaseController {
 			}
        	}
 	}
+
+    /**
+     * Returns current state of game
+     *
+     * @return Response
+     */
+    public function previousRound() {
+
+        $gameId = Session::get('game_id');
+        $userId = Auth::user()->id;
+
+        if ($gameId != null) {
+            $game = Game::find($gameId)->toArray();
+            if($game['current_round'] > 1){
+                $dice = Dice::join('users', 'users.id', '=', 'dice.user_id')
+                    ->where('game_id', $gameId)
+                    ->where('round', $game['current_round']-1)
+                    ->get()
+                    ->toArray();
+
+                $previousDice = array();
+                foreach($dice as $id => $die){
+                    $previousDice[$id]['username'] = $die['username'];
+                    $previousDice[$id]['dice'] = explode(',',$die['dice_face']);
+                }
+
+                return Response::json(array(
+                        'error' => false,
+                        'previousDice' => $previousDice
+                    ),
+                    200
+                );
+
+            }
+        }
+    }
 
 	/**
 	 * Make Move
@@ -209,9 +245,6 @@ class GameController extends BaseController {
 							->orderBy('created_at', 'DESC')
 							->first()
 							->toArray();
-
-
-
 
 						if(Input::get('call') == 'perfect'){
 							if($diceTotals[(int)$lastRaise['dice_number']] == (int)$lastRaise['amount']){
