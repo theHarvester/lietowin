@@ -1,6 +1,8 @@
 var queueUrl = window.urlPathPrefix + "/api/v1/queue";
 var gameUrl = window.urlPathPrefix + "/api/v1/game";
 var moveUrl = window.urlPathPrefix + "/api/v1/game/move";
+var currentRound = 1;
+var lastCelebratedRound = 0;
 var playerOrder;
 
 $(document).ready(function(){
@@ -63,6 +65,19 @@ function updateGame(gameState){
 	if(gameState.moves !== 'undefinded'){
 		updateMoves(gameState.moves);
 	}
+
+    if(gameState.round !== 'undefinded'){
+        updateRound(gameState.round);
+    }
+
+    if(currentRound > 1){
+//        console.log(currentRound - 2 >= lastCelebratedRound, gameState.lastRoundEnd);
+        if(currentRound - 2 >= lastCelebratedRound && gameState.lastRoundEnd){
+            roundEnd(gameState.lastRoundEnd);
+        }
+    }
+
+//    console.log(currentRound );
 }
 
 function updateDiceAvailable(diceAvailable){
@@ -130,6 +145,19 @@ function currentlyQueued(isQueued){
         $('#currentlyQueued').show();
     } else {
         $('#currentlyQueued').hide();
+    }
+}
+
+function updateRound(round){
+    window.currentRound = round;
+}
+
+function roundEnd(lastRound){
+//    console.log(lastRound);
+    if(lastRound.player == lastRound.loser){
+        $('#roundResult').text(lastRound.loser + ' called ' + lastRound.call + ' and lost.');
+    } else {
+        $('#roundResult').text(lastRound.player + ' called ' + lastRound.call + ' on ' + lastRound.loser + ' and won.');
     }
 }
 

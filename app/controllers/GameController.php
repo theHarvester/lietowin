@@ -9,28 +9,25 @@ class GameController extends BaseController {
 	 */
 	public function index()
 	{
-		$displayArr = array();
 		$gameId = Session::get('game_id');
 		$userId = Auth::user()->id;
-		$currentUsers = array();
 
 		if ($gameId != null) {
 			$game = Game::find($gameId)->toArray();
 			if($game['active'] == true){
 				$turnOrder = array();
 
-				// var_dump(explode(",",$game['turn_order'])); die();
 				foreach (explode(',', $game['turn_order']) as $playerId) {
 					$user = User::find($playerId);
-					// $currentUsers[$user['id']] = $user['username'];
 					$turnOrder[] = $user['username'];
 					if($game['user_turn'] == $playerId){
 						$playersTurn = $user['username'];
 					}
 				}
-				$displayMoves = array();
-				
+
+
 				// get all moves
+                $displayMoves = array();
 				$moves = Moves::where('game_id', $gameId)
 					->join('users', 'users.id', '=', 'moves.user_id')
 					->where('round', $game['current_round'])
@@ -70,14 +67,31 @@ class GameController extends BaseController {
 					$diceAvailableArr[$value['username']] = $value['dice_available'];
 				}
 
+                $lastRoundEnd = array();
+                if($game['current_round'] > 1){
+                    $lastRoundEndObj = Moves::where('game_id', $gameId)
+                        ->join('users', 'users.id', '=', 'moves.user_id')
+                        ->where('round', $game['current_round']-1)
+                        ->whereIn('call', array('perfect','lie'))
+                        ->first()
+                        ->toArray();
+
+                    $lastRoundEnd['player'] = $lastRoundEndObj['username'];
+                    $lastRoundEnd['call'] = $lastRoundEndObj['call'];
+                    $lastRoundEnd['diceFace'] = $lastRoundEndObj['dice_number'];
+                    $lastRoundEnd['amount'] = $lastRoundEndObj['amount'];
+                    $lastRoundEnd['round'] = $lastRoundEndObj['round'];
+                    $lastRoundEnd['loser'] = User::find($lastRoundEndObj['loser_id'])->toArray()['username'];
+                }
+
 				return Response::json(array(
 			        'error' => false,
 			        'myDice' => $myDiceFace,
 			        'diceAvailable' => $diceAvailableArr,
-			        // 'playersTurn' => $game['user_turn'],
 			        'playersTurn' => $playersTurn,
 			        'playerOrder' => $turnOrder,
-			        // 'playerOrder' => explode(',', $game['turn_order']),
+                    'round' => $game['current_round'],
+                    'lastRoundEnd' => $lastRoundEnd,
 			        'moves' => $displayMoves
 			        ),
 			        200
@@ -196,15 +210,7 @@ class GameController extends BaseController {
 							->first()
 							->toArray();
 
-						$move = new Moves;
-						$move->game_id = $gameId;
-						$move->user_id = $userId;
-						$move->call = Input::get('call');
-						$move->round = $game['current_round'];
-						$move->amount = $lastRaise['amount'];
-						$move->dice_number = $lastRaise['dice_number'];
-						$move->move_guid = hash('ripemd160', uniqid());
-						$move->save();
+
 
 
 						if(Input::get('call') == 'perfect'){
@@ -227,6 +233,17 @@ class GameController extends BaseController {
 							}
 						}
 
+                        $move = new Moves;
+                        $move->game_id = $gameId;
+                        $move->user_id = $userId;
+                        $move->call = Input::get('call');
+                        $move->round = $game['current_round'];
+                        $move->amount = $lastRaise['amount'];
+                        $move->dice_number = $lastRaise['dice_number'];
+                        $move->move_guid = hash('ripemd160', uniqid());
+                        $move->loser_id = $playerLostId;
+                        $move->save();
+
 						$this->endRound($gameId, $playerLostId, $diceAvailable);
 						$playerLost = User::find((int)$playerLostId);
 
@@ -241,7 +258,19 @@ class GameController extends BaseController {
 
 		}
 
-		die();
+//        return Response::json(array(
+//                'error' => false,
+//                'myDice' => $myDiceFace,
+//                'diceAvailable' => $diceAvailableArr,
+//                // 'playersTurn' => $game['user_turn'],
+//                'playersTurn' => $playersTurn,
+//                'playerOrder' => $turnOrder,
+//                // 'playerOrder' => explode(',', $game['turn_order']),
+//                'moves' => $displayMoves
+//            ),
+//            200
+//        );
+
 	}
 
 	private function endRound($gameId, $playerLoseId, $diceAvailable){
@@ -274,9 +303,7 @@ class GameController extends BaseController {
 			$diceRoll->dice_face = implode(",", $diceFace);
 			$diceRoll->save();
 		}
-		// var_dump($diceAvailable);
-
-		die();
+        return true;
 	}
 
 	private function playerLosesGame(){

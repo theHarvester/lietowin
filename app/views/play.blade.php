@@ -12,6 +12,7 @@
         <div id="diceAvailable"></div>
         <div id="moveHistory"></div>
         <div id="currentlyQueued">You are in the queue, please wait while we find you a game.</div>
+        <div id="roundResult"></div>
         <div id="turnFormContainer">
             <form id="turnForm" action="/apifight/public/api/v1/game/move" type="post">
             Dice: <input type="text" name="dice_number"><br>
