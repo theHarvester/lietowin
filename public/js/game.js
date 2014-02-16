@@ -5,6 +5,7 @@ var lastDiceUrl = window.urlPathPrefix + "/api/v1/game/dice";
 var currentRound = 1;
 var lastCelebratedRound = 0;
 var playerOrder;
+var renderPlayers = false;
 
 // ensures the round over animation is only done once
 var toggleRoundOver = false;
@@ -13,10 +14,14 @@ var isNewRound = true;
 
 $(document).ready(function(){
 	$('#turnForm').hide();
-	$('#turnForm').submit(function(){
+	$('#turnForm form').submit(function(){
         makeMove(this);
 		return false;
 	});
+
+    $('.white_content .exit').click(function(){
+        $(this).parent('.white_content').hide();
+    });
 });
 
 setInterval(function(){
@@ -84,90 +89,52 @@ function updateGame(gameState){
 
 function updateDiceAvailable(diceAvailable){
     if(isNewRound){
-        var renderPlayers = false;
-        for (var i in window.playerOrder){
-            // we need to start with the player logged in
-            // so we loop to that player and start drawing
-            // and then loop back at the start until we hit
-            // the player again
-
-            var player = window.playerOrder[i];
-            if(player == username){
-                if(renderPlayers)
-                    renderPlayers = false;
-                else
-                    renderPlayers = true;
-            } else if (renderPlayers){
-                if($('#diceAvailable .p_'+player).length == 0){
-                    // draw for the first time
-                    var elementToAppend = '<div class="p_'+player+'">';
-                    elementToAppend += '<div class="username">'
-                    elementToAppend += player;
-                    elementToAppend += '</div>';
-                    elementToAppend += '<div class="opponentsDice">&nbsp;</div>';
-                    elementToAppend += '</div>';
-                    $('#diceAvailable').append(elementToAppend);
-
-                    $('#diceAvailable .p_'+player+' .opponentsDice').empty();
-
-                    for(var i = 0; i < parseInt(diceAvailable[player]); i++){
-                        $('#diceAvailable .p_'+player+' .opponentsDice').append(getDieByInt('?'));
-                    };
-                }
-                else {
-                    // update player dice
-                    $('#diceAvailable .p_'+player+' .opponentsDice').empty();
-
-                    for(var i = 0; i < parseInt(diceAvailable[player]); i++){
-                        $('#diceAvailable .p_'+player+' .opponentsDice').append(getDieByInt('?'));
-                    };
-                }
-            }
-        }
-
-
-        for (var i in window.playerOrder){
-            // we need to start with the player logged in
-            // so we loop to that player and start drawing
-            // and then loop back at the start until we hit
-            // the player again
-
-            var player = window.playerOrder[i];
-            if(player == username){
-                if(renderPlayers)
-                    renderPlayers = false;
-                else
-                    renderPlayers = true;
-            } else if (renderPlayers){
-                if($('#diceAvailable .p_'+player).length == 0){
-                    // draw for the first time
-                    var elementToAppend = '<div class="p_'+player+'">';
-                    elementToAppend += '<div class="username">'
-                    elementToAppend += player;
-                    elementToAppend += '</div>';
-                    elementToAppend += '<div class="opponentsDice">&nbsp;</div>';
-                    elementToAppend += '</div>';
-                    $('#diceAvailable').append(elementToAppend);
-
-                    $('#diceAvailable .p_'+player+' .opponentsDice').empty();
-
-                    for(var i = 0; i < parseInt(diceAvailable[player]); i++){
-                        $('#diceAvailable .p_'+player+' .opponentsDice').append(getDieByInt('?'));
-                    };
-                }
-                else {
-                    // update player dice
-                    $('#diceAvailable .p_'+player+' .opponentsDice').empty();
-
-                    for(var i = 0; i < parseInt(diceAvailable[player]); i++){
-                        $('#diceAvailable .p_'+player+' .opponentsDice').append(getDieByInt('?'));
-                    };
-                }
-            }
-        }
-
+        renderPlayers = false;
+        // we need to start with the player logged in
+        // so we loop to that player and start drawing
+        // and then loop back at the start until we hit
+        // the player again
+        loopDiceAvailable(diceAvailable);
+        loopDiceAvailable(diceAvailable);
     }
 
+}
+
+function loopDiceAvailable(diceAvailable){
+    for (var i in window.playerOrder){
+        var player = window.playerOrder[i];
+        if(player == username){
+            if(renderPlayers)
+                renderPlayers = false;
+            else
+                renderPlayers = true;
+        } else if (renderPlayers){
+            if($('#diceAvailable .p_'+player).length == 0){
+                // draw for the first time
+                var elementToAppend = '<div class="p_'+player+'">';
+                elementToAppend += '<div class="username">'
+                elementToAppend += player;
+                elementToAppend += '</div>';
+                elementToAppend += '<div class="opponentsDice">&nbsp;</div>';
+                elementToAppend += '</div>';
+                $('#diceAvailable').append(elementToAppend);
+
+                $('#diceAvailable .p_'+player+' .opponentsDice').empty();
+
+                for(var i = 0; i < parseInt(diceAvailable[player]); i++){
+                    $('#diceAvailable .p_'+player+' .opponentsDice').append(getDieByInt('?'));
+                };
+            }
+            else {
+                // update player dice
+                $('#diceAvailable .p_'+player+' .opponentsDice').empty();
+
+                for(var i = 0; i < parseInt(diceAvailable[player]); i++){
+                    $('#diceAvailable .p_'+player+' .opponentsDice').append(getDieByInt('?'));
+                };
+            }
+        }
+    }
 }
 
 function updatePlayersTurn(player){
@@ -234,7 +201,7 @@ function roundEnd(lastRound){
             //the round is definitely over
             $('#moveHistory').empty();
 
-            $('#roundResult').empty();
+            $('#roundResult .content').empty();
             $('#roundResult').show();
             $.ajax({
                 url: lastDiceUrl,
@@ -247,9 +214,9 @@ function roundEnd(lastRound){
             });
 
             if(lastRound.player == lastRound.loser){
-                $('#roundResult').text(lastRound.loser + ' called ' + lastRound.call + ' and lost.');
+                $('#roundResult .content').text(lastRound.loser + ' called ' + lastRound.call + ' and lost.');
             } else {
-                $('#roundResult').text(lastRound.player + ' called ' + lastRound.call + ' on ' + lastRound.loser + ' and won.');
+                $('#roundResult .content').text(lastRound.player + ' called ' + lastRound.call + ' on ' + lastRound.loser + ' and won.');
             }
 
             toggleRoundOver = false;
@@ -258,14 +225,14 @@ function roundEnd(lastRound){
     }
 }
 
-function revealDice(dice){
+function  revealDice(dice){
     var appendMe = "<br />Last Rounds dice:<br />";
     $(dice).each(function(){
         console.log(this);
         appendMe += this.username + " ";
         appendMe += this.dice.join(', ') + "<br />";
     });
-    $('#roundResult').append(appendMe);
+    $('#roundResult .content').append(appendMe);
 }
 
 
