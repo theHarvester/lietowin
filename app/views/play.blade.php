@@ -27,7 +27,7 @@
 <div id="diceSvg">
     <!-- Empty Dice -->
     <div id="emptyDice">
-        <div class="dice float">
+        <div class="dice float textContent">
             &nbsp;
         </div>
     </div>

@@ -83,23 +83,90 @@ function updateGame(gameState){
 }
 
 function updateDiceAvailable(diceAvailable){
-	for (var i in window.playerOrder){
-		var player = window.playerOrder[i];
+    if(isNewRound){
+        var renderPlayers = false;
+        for (var i in window.playerOrder){
+            // we need to start with the player logged in
+            // so we loop to that player and start drawing
+            // and then loop back at the start until we hit
+            // the player again
 
-		if($('#diceAvailable .'+player).length == 0){
-			// draw for the first time
-			var elementToAppend = '<div class="'+player+'">';
-			elementToAppend += player;
-			elementToAppend += ' has '
-			elementToAppend += diceAvailable[player];
-			elementToAppend += ' dice left';
-			elementToAppend += '</div>';
-			$('#diceAvailable').append(elementToAppend);
-		}
-		else {
-			// update player dice
-		}
-	}
+            var player = window.playerOrder[i];
+            if(player == username){
+                if(renderPlayers)
+                    renderPlayers = false;
+                else
+                    renderPlayers = true;
+            } else if (renderPlayers){
+                if($('#diceAvailable .p_'+player).length == 0){
+                    // draw for the first time
+                    var elementToAppend = '<div class="p_'+player+'">';
+                    elementToAppend += '<div class="username">'
+                    elementToAppend += player;
+                    elementToAppend += '</div>';
+                    elementToAppend += '<div class="opponentsDice">&nbsp;</div>';
+                    elementToAppend += '</div>';
+                    $('#diceAvailable').append(elementToAppend);
+
+                    $('#diceAvailable .p_'+player+' .opponentsDice').empty();
+
+                    for(var i = 0; i < parseInt(diceAvailable[player]); i++){
+                        $('#diceAvailable .p_'+player+' .opponentsDice').append(getDieByInt('?'));
+                    };
+                }
+                else {
+                    // update player dice
+                    $('#diceAvailable .p_'+player+' .opponentsDice').empty();
+
+                    for(var i = 0; i < parseInt(diceAvailable[player]); i++){
+                        $('#diceAvailable .p_'+player+' .opponentsDice').append(getDieByInt('?'));
+                    };
+                }
+            }
+        }
+
+
+        for (var i in window.playerOrder){
+            // we need to start with the player logged in
+            // so we loop to that player and start drawing
+            // and then loop back at the start until we hit
+            // the player again
+
+            var player = window.playerOrder[i];
+            if(player == username){
+                if(renderPlayers)
+                    renderPlayers = false;
+                else
+                    renderPlayers = true;
+            } else if (renderPlayers){
+                if($('#diceAvailable .p_'+player).length == 0){
+                    // draw for the first time
+                    var elementToAppend = '<div class="p_'+player+'">';
+                    elementToAppend += '<div class="username">'
+                    elementToAppend += player;
+                    elementToAppend += '</div>';
+                    elementToAppend += '<div class="opponentsDice">&nbsp;</div>';
+                    elementToAppend += '</div>';
+                    $('#diceAvailable').append(elementToAppend);
+
+                    $('#diceAvailable .p_'+player+' .opponentsDice').empty();
+
+                    for(var i = 0; i < parseInt(diceAvailable[player]); i++){
+                        $('#diceAvailable .p_'+player+' .opponentsDice').append(getDieByInt('?'));
+                    };
+                }
+                else {
+                    // update player dice
+                    $('#diceAvailable .p_'+player+' .opponentsDice').empty();
+
+                    for(var i = 0; i < parseInt(diceAvailable[player]); i++){
+                        $('#diceAvailable .p_'+player+' .opponentsDice').append(getDieByInt('?'));
+                    };
+                }
+            }
+        }
+
+    }
 
 }
 
@@ -139,33 +206,10 @@ function updateMyDice(dice){
         $('#myDice').empty();
 
         $(dice).each(function(){
-            var die = null;
-            switch (parseInt(this[0]))
-            {
-                case 1:
-                    die = $('#dice1').clone();
-                    break;
-                case 2:
-                    die = $('#dice2').clone();
-                    break;
-                case 3:
-                    die = $('#dice3').clone();
-                    break;
-                case 4:
-                    die = $('#dice4').clone();
-                    break;
-                case 5:
-                    die = $('#dice5').clone();
-                    break;
-                case 6:
-                    die = $('#dice6').clone();
-                    break;
-            }
-            die.removeAttr('id');
-            $('#myDice').append(die);
+
+            $('#myDice').append(getDieByInt(this[0]));
         });
     }
-//    .text(message);
 }
 
 function currentlyQueued(isQueued){
@@ -222,4 +266,37 @@ function revealDice(dice){
         appendMe += this.dice.join(', ') + "<br />";
     });
     $('#roundResult').append(appendMe);
+}
+
+
+function getDieByInt(dieNumber){
+    var die = null;
+    switch (dieNumber)
+    {
+        case "1":
+            die = $('#dice1').clone();
+            break;
+        case "2":
+            die = $('#dice2').clone();
+            break;
+        case "3":
+            die = $('#dice3').clone();
+            break;
+        case "4":
+            die = $('#dice4').clone();
+            break;
+        case "5":
+            die = $('#dice5').clone();
+            break;
+        case "6":
+            die = $('#dice6').clone();
+            break;
+        default :
+            die = $('#emptyDice').clone();
+            $(die).children('.textContent').text(dieNumber);
+            break;
+    }
+    die.removeAttr('id');
+
+    return die;
 }
