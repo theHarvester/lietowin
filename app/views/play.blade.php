@@ -107,7 +107,7 @@
 
     <!-- 3 -->
     <div id="dice3">
-        <div id="dice3" class="dice float">
+        <div class="dice float">
             <svg width="80" height="80" xmlns="http://www.w3.org/2000/svg" class="drawing">
                 <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
                 <g>
@@ -158,7 +158,7 @@
 
     <!-- 4 -->
     <div id="dice4">
-        <div id="dice4" class="dice float">
+        <div class="dice float">
             <svg width="80" height="80" xmlns="http://www.w3.org/2000/svg" class="drawing">
                 <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
                 <g>

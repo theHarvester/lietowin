@@ -214,9 +214,9 @@ function roundEnd(lastRound){
             });
 
             if(lastRound.player == lastRound.loser){
-                $('#roundResult .content').text(lastRound.loser + ' called ' + lastRound.call + ' and lost.');
+                $('#roundResult .content').html('<div id="revealHeading">' + lastRound.loser + ' called ' + lastRound.call + ' and lost</div>');
             } else {
-                $('#roundResult .content').text(lastRound.player + ' called ' + lastRound.call + ' on ' + lastRound.loser + ' and won.');
+                $('#roundResult .content').html('<div id="revealHeading">' + lastRound.player + ' called ' + lastRound.call + ' on ' + lastRound.loser + ' and won</div>');
             }
 
             toggleRoundOver = false;
@@ -225,13 +225,23 @@ function roundEnd(lastRound){
     }
 }
 
-function  revealDice(dice){
-    var appendMe = "<br />Last Rounds dice:<br />";
+function revealDice(dice){
+    var appendMe = '<div id="revealLastDice">';
     $(dice).each(function(){
-        console.log(this);
-        appendMe += this.username + " ";
-        appendMe += this.dice.join(', ') + "<br />";
+        appendMe += '<div class="revealUsername">';
+        if(this.username == username){
+            appendMe += 'You';
+        } else {
+            appendMe += this.username
+        }
+        appendMe += '</div> <div class="diceRow">';
+        $(this.dice).each(function(){
+            appendMe += getDieByInt(this[0]).html() + " ";
+            console.log(getDieByInt(this[0]).html());
+        });
+        appendMe += "</div>";
     });
+    appendMe += '</div>';
     $('#roundResult .content').append(appendMe);
 }
 
