@@ -7,17 +7,16 @@
     var username = "{{ $username }}";
 </script>
 <div id="body-container">
-    <div id="output"></div>
-    <div id="myDice"></div>
-    <div id="diceAvailable"></div>
-    <div id="moveHistory"></div>
     <div id="currentlyQueued">You are in the queue, please wait while we find you a game.</div>
-    <div id="roundResult" class="white_content"><div class="exit">X</div><div class="content"></div></div>
     <div id="turnFormContainer">
         <div id="turnForm">
             <form id="turnFormRaise" action="/apifight/public/api/v1/game/move" type="post">
-                Dice: <input type="text" name="dice_number"><br>
-                Amount: <input type="text" name="amount"><br>
+                <div class="diceRow">
+                    <div id="raiseDiceAmount"></div>
+                    <div id="raiseDiceNumber"></div>
+                </div>
+                <input type="hidden" name="dice_number">
+                <input type="hidden" name="amount">
                 <input type="hidden" name="call" value="raise" checked="checked">
                 <input type="submit" value="Raise">
             </form>
@@ -33,6 +32,12 @@
             </form>
         </div>
     </div>
+    <div id="myDice"></div>
+    <div id="diceAvailable"></div>
+    <div id="moveHistory"></div>
+
+    <div id="roundResult" class="white_content"><div class="exit">X</div><div class="content"></div></div>
+    <div id="output"></div>
 </div>
 
 

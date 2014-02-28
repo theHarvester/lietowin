@@ -6,6 +6,8 @@ var currentRound = 1;
 var lastCelebratedRound = 0;
 var playerOrder;
 var renderPlayers = false;
+var lastBetDice = 0;
+var lastBetAmount = 0;
 
 // ensures the round over animation is only done once
 var toggleRoundOver = false;
@@ -122,7 +124,7 @@ function loopDiceAvailable(diceAvailable){
                 $('#diceAvailable .p_'+player+' .opponentsDice').empty();
 
                 for(var i = 0; i < parseInt(diceAvailable[player]); i++){
-                    $('#diceAvailable .p_'+player+' .opponentsDice').append(getDieByInt('?'));
+                    $('#diceAvailable .p_'+player+' .opponentsDice').append(drawDie('?'));
                 };
             }
             else {
@@ -130,7 +132,7 @@ function loopDiceAvailable(diceAvailable){
                 $('#diceAvailable .p_'+player+' .opponentsDice').empty();
 
                 for(var i = 0; i < parseInt(diceAvailable[player]); i++){
-                    $('#diceAvailable .p_'+player+' .opponentsDice').append(getDieByInt('?'));
+                    $('#diceAvailable .p_'+player+' .opponentsDice').append(drawDie('?'));
                 };
             }
         }
@@ -141,6 +143,17 @@ function updatePlayersTurn(player){
 	if(player == username){
 		// it's your turn
 		$('#turnForm').show();
+        if(lastBetAmount > 0){
+            $('#raiseDiceAmount').html(drawDie(lastBetAmount + "x"));
+        } else {
+            $('#raiseDiceAmount').html(drawDie("1x"));
+        }
+        if(lastBetDice >= 1 && lastBetDice <= 6){
+            $('#raiseDiceNumber').html(drawDie(lastBetDice));
+        } else {
+            $('#raiseDiceNumber').html(drawDie(1));
+        }
+
 	} else {
 		$('#turnForm').hide();
 	}
@@ -161,6 +174,8 @@ function updateMoves(moves){
 			if(moves[i].call == "raise"){
 				elementToAppend += ' has bet ';
 				elementToAppend += moves[i].amount + ' ' + moves[i].diceFace + 's';
+                lastBetDice = moves[i].diceFace;
+                lastBetAmount = moves[i].amount;
 			}
 			elementToAppend += '</div>';
 			$('#moveHistory').append(elementToAppend);
@@ -174,7 +189,7 @@ function updateMyDice(dice){
 
         $(dice).each(function(){
 
-            $('#myDice').append(getDieByInt(this[0]));
+            $('#myDice').append(drawDie(this[0]));
         });
     }
 }
@@ -236,8 +251,7 @@ function revealDice(dice){
         }
         appendMe += '</div> <div class="diceRow">';
         $(this.dice).each(function(){
-            appendMe += getDieByInt(this[0]).html() + " ";
-            console.log(getDieByInt(this[0]).html());
+            appendMe += drawDie(this[0]).html() + " ";
         });
         appendMe += "</div>";
     });
@@ -246,7 +260,8 @@ function revealDice(dice){
 }
 
 
-function getDieByInt(dieNumber){
+function drawDie(dieNumber){
+    dieNumber = String(dieNumber);
     var die = null;
     switch (dieNumber)
     {
