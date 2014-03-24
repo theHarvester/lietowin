@@ -16,7 +16,7 @@ padding:30px 10px 30px 10px;
 margin-left:-450px;
 }
 
-.diceRow{
+.diceRaiseRow{
     height: 90px;
     margin-bottom: 40px;
 }
@@ -121,4 +121,37 @@ svg.drawing {
     #body-container{
         width:100%;
     }
+}
+
+
+.arrowUp {
+    border-bottom: 45px solid #353535;
+    margin-left: 20px;
+}
+
+.arrowDown {
+    border-top: 45px solid #353535;
+    margin-left: 20px;
+}
+
+.arrowBase {
+    width: 0;
+    height: 0;
+    border-left: 45px solid transparent;
+    border-right: 45px solid transparent;
+
+}
+
+.diceReserve {
+    width: 120px;
+    height: 130px;
+}
+
+.diceColumn {
+    width: 120px;
+    float: left;
+}
+
+.clear {
+    clear:both;
 }
