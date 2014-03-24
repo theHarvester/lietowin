@@ -12,21 +12,21 @@
         <div id="turnForm">
             <form id="turnFormRaise" action="/apifight/public/api/v1/game/move" type="post">
                 <div class="diceRaiseRow">
-                    <div class="diceColumn">
+                    <div id="diceAmt" class="diceColumn">
                         <div class="arrowBase arrowUp raiseArrow">&nbsp;</div>
                         <div id="raiseDiceAmount" class="diceReserve"></div>
                         <div class="arrowBase arrowDown lowerArrow">&nbsp;</div>
                     </div>
-                    <div class="diceColumn">
+                    <div id="diceNum" class="diceColumn">
                         <div class="arrowBase arrowUp raiseArrow">&nbsp;</div>
                         <div id="raiseDiceNumber" class="diceReserve"></div>
                         <div class="arrowBase arrowDown lowerArrow">&nbsp;</div>
                     </div>
                 </div>
                 <div class="clear"></div>
-                <input type="hidden" name="dice_number">
-                <input type="hidden" name="amount">
-                <input type="hidden" name="call" value="raise" checked="checked">
+                <input id="dice_number" type="hidden" name="dice_number">
+                <input id="amount" type="hidden" name="amount">
+                <input id="raise" type="hidden" name="call" value="raise" checked="checked">
                 <input type="submit" value="Raise">
             </form>
 

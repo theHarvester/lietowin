@@ -8,6 +8,9 @@ var playerOrder;
 var renderPlayers = false;
 var lastBetDice = 0;
 var lastBetAmount = 0;
+var userInControl = false;
+var myBetAmount = 1;
+var myBetNum = 1;
 
 // ensures the round over animation is only done once
 var toggleRoundOver = false;
@@ -23,6 +26,21 @@ $(document).ready(function(){
 
     $('.white_content .exit').click(function(){
         $(this).parent('.white_content').hide();
+    });
+
+    $('#diceAmt .raiseArrow').click(function(){
+        changeBet("raiseAmt");
+    });
+    $('#diceAmt .lowerArrow').click(function(){
+        changeBet("lowerAmt");
+    });
+
+    $('#diceNum .raiseArrow').click(function(){
+        changeBet("raiseNum");
+    });
+
+    $('#diceNum .lowerArrow').click(function(){
+        changeBet("lowerNum");
     });
 });
 
@@ -48,6 +66,8 @@ setInterval(function(){
 
 function makeMove(form){
     $('#turnForm').hide();
+    $('#amount').val(String(myBetAmount));
+    $('#dice_number').val(String(myBetNum));
     $.ajax({
         url: moveUrl,
         type: "POST",
@@ -56,6 +76,7 @@ function makeMove(form){
             console.log(data);
         }, dataType: "json"
     });
+    userInControl = false;
 }
 
 function updateGame(gameState){
@@ -87,6 +108,53 @@ function updateGame(gameState){
         roundEnd(gameState.lastRoundEnd);
     }
     isNewRound = false;
+}
+
+function changeBet(diff){
+    userInControl = true;
+    myBetAmount = parseInt(myBetAmount);
+    myBetNum = parseInt(myBetNum);
+
+    //todo: need better game logic here
+    //todo: need error messages
+    switch (diff){
+        case "raiseAmt":
+            myBetAmount += 1;
+            break;
+        case "lowerAmt":
+            myBetAmount -= 1;
+            break;
+        case "raiseNum":
+            if(myBetNum > 6){
+                myBetAmount += 1;
+                myBetNum -= 5;
+            } else if(myBetNum == 6) {
+                myBetAmount += 1;
+                myBetNum = 1;
+            } else {
+                myBetNum += 1;
+            }
+
+            break;
+        case "lowerNum":
+            if(lastBetAmount == 1 && lastBetDice == 1){
+                // Can't go any lower bro
+                console.log('here brah');
+            } else if(lastBetAmount == myBetAmount && (myBetNum - 1) <= lastBetDice){
+                // cant lower the dice face with this amount bet
+                console.log('here1 brah');
+            } else if(myBetNum < 0){
+                myBetNum += 5;
+                myBetAmount -= 1;
+            } else if(myBetNum == 0){
+                myBetNum = 6;
+                myBetAmount -= 1;
+            }
+
+            break;
+    }
+    console.log(myBetNum, myBetAmount);
+    updatePlayersTurn({});
 }
 
 function updateDiceAvailable(diceAvailable){
@@ -140,23 +208,36 @@ function loopDiceAvailable(diceAvailable){
 }
 
 function updatePlayersTurn(player){
-	if(player == username){
-		// it's your turn
-		$('#turnForm').show();
+
+    //todo:need a better way of testing if current users turn
+    if(player == username){
+        $('#turnForm').show();
+    } else {
+        $('#turnForm').hide();
+    }
+
+    if(userInControl){
+        $('#raiseDiceAmount').html(drawDie(myBetAmount + "x"));
+        $('#raiseDiceNumber').html(drawDie(myBetNum));
+    } else {
+        // it's your turn
+        $('#turnForm').show();
         if(lastBetAmount > 0){
             $('#raiseDiceAmount').html(drawDie(lastBetAmount + "x"));
+            myBetAmount = lastBetAmount;
         } else {
             $('#raiseDiceAmount').html(drawDie("1x"));
+            myBetAmount = 1;
         }
         if(lastBetDice >= 1 && lastBetDice <= 6){
             $('#raiseDiceNumber').html(drawDie(lastBetDice));
+            myBetNum = lastBetDice;
         } else {
             $('#raiseDiceNumber').html(drawDie(1));
+            myBetNum = 1;
         }
+    }
 
-	} else {
-		$('#turnForm').hide();
-	}
 }
 
 
@@ -243,7 +324,7 @@ function roundEnd(lastRound){
 function revealDice(dice){
     var appendMe = '<div id="revealLastDice">';
     $(dice).each(function(){
-        appendMe += '<div class="revealUsername">';
+        appendMe += '<div class="clear revealUsername">';
         if(this.username == username){
             appendMe += 'You';
         } else {
