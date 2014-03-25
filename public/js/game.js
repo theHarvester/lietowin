@@ -339,9 +339,23 @@ function roundEnd(lastRound){
             });
 
             if(lastRound.player == lastRound.loser){
-                $('#roundResult .content').html('<div id="revealHeading">' + lastRound.loser + ' called ' + lastRound.call + ' and lost</div>');
+                var roundLoser = lastRound.loser;
+                if(roundLoser == username){
+                    roundLoser = 'You';
+                }
+
+                $('#roundResult .content').html('<div id="revealHeading">' + roundLoser + ' called ' + lastRound.call + ' and lost</div>');
             } else {
-                $('#roundResult .content').html('<div id="revealHeading">' + lastRound.player + ' called ' + lastRound.call + ' on ' + lastRound.loser + ' and won</div>');
+                var roundLoser = lastRound.loser;
+                if(roundLoser == username){
+                    roundLoser = 'you';
+                }
+                var roundWinner = lastRound.player;
+                if(roundWinner == username){
+                    roundWinner = 'You';
+                }
+                console.log(roundLoser, roundWinner);
+                $('#roundResult .content').html('<div id="revealHeading">' + roundWinner + ' called ' + lastRound.call + ' on ' + roundLoser + ' and won</div>');
             }
 
             toggleRoundOver = false;
