@@ -356,7 +356,6 @@ function roundEnd(lastRound){
                 if(roundWinner == username){
                     roundWinner = 'You';
                 }
-                console.log(roundLoser, roundWinner);
                 $('#roundResult .content').html('<div id="revealHeading">' + roundWinner + ' called ' + lastRound.call + ' on ' + roundLoser + ' and won</div>');
             }
 
