@@ -27,23 +27,28 @@
                 <input id="dice_number" type="hidden" name="dice_number">
                 <input id="amount" type="hidden" name="amount">
                 <input id="raise" type="hidden" name="call" value="raise" checked="checked">
-                <input type="submit" value="Raise">
+                <a href="#" class="button">Raise</a>
             </form>
 
             <form id="turnFormLie" action="/apifight/public/api/v1/game/move" type="post">
                 <input type="hidden" name="call" value="lie">
-                <input type="submit" value="Lie">
+                <a href="#" class="button">Lie</a>
             </form>
 
             <form id="turnFormPerfect" action="/apifight/public/api/v1/game/move" type="post">
                 <input type="hidden" name="call" value="perfect">
-                <input type="submit" value="Spot on">
+                <a href="#" class="button">Spot on</a>
             </form>
         </div>
     </div>
     <div class="clear"></div>
+
     <div id="myDice"></div>
+    <div class="clear"></div>
+
     <div id="diceAvailable"></div>
+    <div class="clear"></div>
+
     <div id="moveHistory"></div>
 
     <div id="roundResult" class="white_content">

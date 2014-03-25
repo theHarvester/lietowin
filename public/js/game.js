@@ -26,6 +26,10 @@ $(document).ready(function(){
 		return false;
 	});
 
+    $('.button').click(function(){
+        $(this).parent('form').submit();
+    });
+
     $('.white_content .exit').click(function(){
         $(this).parent('.white_content').hide();
     });
@@ -119,8 +123,6 @@ function changeBet(diff){
 
     console.log(diff + " last bet amount " + lastBetAmount + ", last bet dice " + lastBetDice);
 
-    //todo: need better game logic here
-    //todo: need error messages
     switch (diff){
         case "raiseAmt":
             myBetAmount += 1;
@@ -296,7 +298,7 @@ function updateMoves(moves){
 function updateMyDice(dice){
     if(isNewRound){
         $('#myDice').empty();
-
+        $('#myDice').append('<div class="username">You</div>');
         $(dice).each(function(){
 
             $('#myDice').append(drawDie(this[0]));

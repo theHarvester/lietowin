@@ -72,9 +72,8 @@ margin-left:-450px;
 
 }
 #turnFormContainer {
-
     display: block;
-    width: 500px;
+    margin-bottom: 20px;
 }
 
 html {
@@ -135,6 +134,7 @@ svg.drawing {
     height: 0;
     border-left: 45px solid transparent;
     border-right: 45px solid transparent;
+    cursor: pointer;
 
 }
 
@@ -151,3 +151,25 @@ svg.drawing {
 .clear {
     clear:both;
 }
+
+.button {
+    background-color:#6eb4da;
+    text-indent:0;
+    display:inline-block;
+    color:#ffffff;
+    font-size:15pt;
+    font-weight:normal;
+    font-style:normal;
+    height:65px;
+    line-height:65px;
+    width:270px;
+    text-decoration:none;
+    text-align:center;
+    text-shadow:1px 1px 0px #5196b8;
+    margin: 10px;
+}.button:hover {
+     background-color:#5aa6cc;
+ }.button:active {
+      position:relative;
+      top:1px;
+  }
