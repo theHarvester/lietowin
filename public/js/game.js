@@ -6,11 +6,13 @@ var currentRound = 1;
 var lastCelebratedRound = 0;
 var playerOrder;
 var renderPlayers = false;
+var currentPayersTurn;
 var lastBetDice = 0;
 var lastBetAmount = 0;
 var userInControl = false;
 var myBetAmount = 1;
-var myBetNum = 1;
+var myBetDice = 1;
+var totalDiceInPlay = 100;
 
 // ensures the round over animation is only done once
 var toggleRoundOver = false;
@@ -67,7 +69,7 @@ setInterval(function(){
 function makeMove(form){
     $('#turnForm').hide();
     $('#amount').val(String(myBetAmount));
-    $('#dice_number').val(String(myBetNum));
+    $('#dice_number').val(String(myBetDice));
     $.ajax({
         url: moveUrl,
         type: "POST",
@@ -113,7 +115,9 @@ function updateGame(gameState){
 function changeBet(diff){
     userInControl = true;
     myBetAmount = parseInt(myBetAmount);
-    myBetNum = parseInt(myBetNum);
+    myBetDice = parseInt(myBetDice);
+
+    console.log(diff + " last bet amount " + lastBetAmount + ", last bet dice " + lastBetDice);
 
     //todo: need better game logic here
     //todo: need error messages
@@ -125,36 +129,49 @@ function changeBet(diff){
             myBetAmount -= 1;
             break;
         case "raiseNum":
-            if(myBetNum > 6){
-                myBetAmount += 1;
-                myBetNum -= 5;
-            } else if(myBetNum == 6) {
-                myBetAmount += 1;
-                myBetNum = 1;
-            } else {
-                myBetNum += 1;
-            }
-
+            myBetDice += 1;
             break;
         case "lowerNum":
-            if(lastBetAmount == 1 && lastBetDice == 1){
-                // Can't go any lower bro
-                console.log('here brah');
-            } else if(lastBetAmount == myBetAmount && (myBetNum - 1) <= lastBetDice){
-                // cant lower the dice face with this amount bet
-                console.log('here1 brah');
-            } else if(myBetNum < 0){
-                myBetNum += 5;
-                myBetAmount -= 1;
-            } else if(myBetNum == 0){
-                myBetNum = 6;
-                myBetAmount -= 1;
-            }
-
+            myBetDice -= 1;
             break;
     }
-    console.log(myBetNum, myBetAmount);
     updatePlayersTurn({});
+}
+
+function prepareBetArrows(){
+    myBetAmount = parseInt(myBetAmount);
+    myBetDice = parseInt(myBetDice);
+
+    $('#diceAmt .raiseArrow').css('visibility', 'visible');
+    $('#diceAmt .lowerArrow').css('visibility', 'visible');
+    $('#diceNum .raiseArrow').css('visibility', 'visible');
+    $('#diceNum .lowerArrow').css('visibility', 'visible');
+
+    console.log(myBetDice);
+
+    // Raise amount arrow
+    if(myBetAmount >= totalDiceInPlay){
+        $('#diceAmt .raiseArrow').css('visibility', 'hidden');
+    }
+
+    // Lower amount arrow
+    if(myBetAmount <= lastBetAmount && myBetAmount > 1){
+        $('#diceAmt .lowerArrow').css('visibility', 'hidden');
+    }
+
+    // Raise dice arrow
+    if(myBetDice >= 6){
+        $('#diceNum .raiseArrow').css('visibility', 'hidden');
+    }
+
+    // Lower dice arrow
+    if(myBetDice <= 1){
+        $('#diceNum .lowerArrow').css('visibility', 'hidden');
+    }
+    if(myBetAmount <= lastBetAmount && myBetDice <= lastBetDice){
+        $('#diceNum .lowerArrow').css('visibility', 'hidden');
+    }
+
 }
 
 function updateDiceAvailable(diceAvailable){
@@ -166,6 +183,11 @@ function updateDiceAvailable(diceAvailable){
         // the player again
         loopDiceAvailable(diceAvailable);
         loopDiceAvailable(diceAvailable);
+
+        totalDiceInPlay = 0;
+        for (var dice in diceAvailable) {
+            totalDiceInPlay += parseInt(diceAvailable[dice]);
+        }
     }
 
 }
@@ -209,34 +231,41 @@ function loopDiceAvailable(diceAvailable){
 
 function updatePlayersTurn(player){
 
-    //todo:need a better way of testing if current users turn
-    if(player == username){
+    if(!isEmpty(player)){
+        currentPayersTurn = player;
+    }
+
+    if(currentPayersTurn == username){
+        prepareBetArrows();
         $('#turnForm').show();
+
+        if(userInControl){
+            $('#raiseDiceAmount').html(drawDie(myBetAmount + "x"));
+            $('#raiseDiceNumber').html(drawDie(myBetDice));
+        } else {
+            // it's your turn
+            $('#turnForm').show();
+            if(lastBetAmount > 0){
+                $('#raiseDiceAmount').html(drawDie(lastBetAmount + "x"));
+                myBetAmount = lastBetAmount;
+            } else {
+                $('#raiseDiceAmount').html(drawDie("1x"));
+                myBetAmount = 1;
+            }
+            if(lastBetDice >= 1 && lastBetDice <= 6){
+                $('#raiseDiceNumber').html(drawDie(lastBetDice));
+                myBetDice = lastBetDice;
+            } else {
+                $('#raiseDiceNumber').html(drawDie(1));
+                myBetDice = 1;
+            }
+            prepareBetArrows();
+        }
+
     } else {
         $('#turnForm').hide();
     }
 
-    if(userInControl){
-        $('#raiseDiceAmount').html(drawDie(myBetAmount + "x"));
-        $('#raiseDiceNumber').html(drawDie(myBetNum));
-    } else {
-        // it's your turn
-        $('#turnForm').show();
-        if(lastBetAmount > 0){
-            $('#raiseDiceAmount').html(drawDie(lastBetAmount + "x"));
-            myBetAmount = lastBetAmount;
-        } else {
-            $('#raiseDiceAmount').html(drawDie("1x"));
-            myBetAmount = 1;
-        }
-        if(lastBetDice >= 1 && lastBetDice <= 6){
-            $('#raiseDiceNumber').html(drawDie(lastBetDice));
-            myBetNum = lastBetDice;
-        } else {
-            $('#raiseDiceNumber').html(drawDie(1));
-            myBetNum = 1;
-        }
-    }
 
 }
 
@@ -372,4 +401,27 @@ function drawDie(dieNumber){
     die.removeAttr('id');
 
     return die;
+}
+
+// Speed up calls to hasOwnProperty
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+function isEmpty(obj) {
+
+    // null and undefined are "empty"
+    if (obj == null) return true;
+
+    // Assume if it has a length property with a non-zero value
+    // that that property is correct.
+    if (obj.length > 0)    return false;
+    if (obj.length === 0)  return true;
+
+    // Otherwise, does it have any properties of its own?
+    // Note that this doesn't handle
+    // toString and valueOf enumeration bugs in IE < 9
+    for (var key in obj) {
+        if (hasOwnProperty.call(obj, key)) return false;
+    }
+
+    return true;
 }
