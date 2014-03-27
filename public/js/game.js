@@ -80,7 +80,7 @@ function makeMove(form){
         type: "POST",
         data: $(form).serialize(),
         success: function(data){
-            console.log(data);
+//            console.log(data);
         }, dataType: "json"
     });
     userInControl = false;
@@ -122,8 +122,6 @@ function changeBet(diff){
     myBetAmount = parseInt(myBetAmount);
     myBetDice = parseInt(myBetDice);
 
-    console.log(diff + " last bet amount " + lastBetAmount + ", last bet dice " + lastBetDice);
-
     switch (diff){
         case "raiseAmt":
             myBetAmount += 1;
@@ -144,13 +142,13 @@ function changeBet(diff){
 function prepareBetArrows(){
     myBetAmount = parseInt(myBetAmount);
     myBetDice = parseInt(myBetDice);
+    lastBetDice = parseInt(lastBetDice);
+    lastBetAmount = parseInt(lastBetAmount);
 
     $('#diceAmt .raiseArrow').css('visibility', 'visible');
     $('#diceAmt .lowerArrow').css('visibility', 'visible');
     $('#diceNum .raiseArrow').css('visibility', 'visible');
     $('#diceNum .lowerArrow').css('visibility', 'visible');
-
-    console.log(myBetDice);
 
     // Raise amount arrow
     if(myBetAmount >= totalDiceInPlay){
@@ -162,6 +160,9 @@ function prepareBetArrows(){
         $('#diceAmt .lowerArrow').css('visibility', 'hidden');
     }
 
+    if(myBetDice < lastBetDice && myBetAmount == (lastBetAmount + 1)){
+        $('#diceAmt .lowerArrow').css('visibility', 'hidden');
+    }
     // Raise dice arrow
     if(myBetDice >= 6){
         $('#diceNum .raiseArrow').css('visibility', 'hidden');

@@ -10,6 +10,25 @@
     <div id="currentlyQueued">You are in the queue, please wait while we find you a game.</div>
     <div id="turnFormContainer">
         <div id="turnForm">
+            <div class="turnForms">
+                <form id="turnFormRaise" action="/apifight/public/api/v1/game/move" type="post">
+                    <div class="clear"></div>
+                    <input id="dice_number" type="hidden" name="dice_number">
+                    <input id="amount" type="hidden" name="amount">
+                    <input id="raise" type="hidden" name="call" value="raise" checked="checked">
+                    <a href="#" class="button">Raise</a>
+                </form>
+
+                <form id="turnFormLie" action="/apifight/public/api/v1/game/move" type="post">
+                    <input type="hidden" name="call" value="lie">
+                    <a href="#" class="button">Lie</a>
+                </form>
+
+                <form id="turnFormPerfect" action="/apifight/public/api/v1/game/move" type="post">
+                    <input type="hidden" name="call" value="perfect">
+                    <a href="#" class="button">Spot on</a>
+                </form>
+            </div>
             <div class="diceRaiseRow">
                 <div id="diceAmt" class="diceColumn">
                     <div class="arrowBase arrowUp raiseArrow">&nbsp;</div>
@@ -22,24 +41,7 @@
                     <div class="arrowBase arrowDown lowerArrow">&nbsp;</div>
                 </div>
             </div>
-            <form id="turnFormRaise" action="/apifight/public/api/v1/game/move" type="post">
 
-                <div class="clear"></div>
-                <input id="dice_number" type="hidden" name="dice_number">
-                <input id="amount" type="hidden" name="amount">
-                <input id="raise" type="hidden" name="call" value="raise" checked="checked">
-                <a href="#" class="button">Raise</a>
-            </form>
-
-            <form id="turnFormLie" action="/apifight/public/api/v1/game/move" type="post">
-                <input type="hidden" name="call" value="lie">
-                <a href="#" class="button">Lie</a>
-            </form>
-
-            <form id="turnFormPerfect" action="/apifight/public/api/v1/game/move" type="post">
-                <input type="hidden" name="call" value="perfect">
-                <a href="#" class="button">Spot on</a>
-            </form>
         </div>
     </div>
     <div class="clear"></div>

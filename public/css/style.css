@@ -2,6 +2,15 @@ body{
 	font-family: 'Fauna One', serif;
 	background-color:#3A5E93; 
 	color:#FFFFFF;
+
+
+    /*pull this out giggady*/
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 #body-container{
@@ -15,6 +24,13 @@ margin-left:-450px;
 .diceRaiseRow{
     height: 90px;
     margin-bottom: 40px;
+    width: 350px;
+    float: left;
+}
+
+.turnForms {
+    width: 350px;
+    float: left;
 }
 
 .revealUsername {
