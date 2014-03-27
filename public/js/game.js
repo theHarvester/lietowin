@@ -178,10 +178,18 @@ function prepareBetArrows(){
         $('#diceNum .lowerArrow').css('visibility', 'hidden');
     }
 
+    prepareBetButtons();
+}
+
+function prepareBetButtons() {
     if($('#diceNum .lowerArrow').css('visibility') == 'hidden' && $('#diceAmt .lowerArrow').css('visibility') == 'hidden'){
         $('#turnFormRaise a').addClass('inactive');
     }
 
+    if(lastBetDice == 0 && lastBetAmount == 0){
+        $('#turnFormLie a').addClass('inactive');
+        $('#turnFormPerfect a').addClass('inactive');
+    }
 }
 
 function updateDiceAvailable(diceAvailable){
@@ -337,6 +345,9 @@ function roundEnd(lastRound){
             $('#roundResult .content').empty();
             $('#roundResult').show();
             $('.black_overlay').show();
+
+            lastBetAmount = 0;
+            lastBetDice = 0;
             $.ajax({
                 url: lastDiceUrl,
                 success: function(data){
