@@ -10,19 +10,20 @@
     <div id="currentlyQueued">You are in the queue, please wait while we find you a game.</div>
     <div id="turnFormContainer">
         <div id="turnForm">
-            <form id="turnFormRaise" action="/apifight/public/api/v1/game/move" type="post">
-                <div class="diceRaiseRow">
-                    <div id="diceAmt" class="diceColumn">
-                        <div class="arrowBase arrowUp raiseArrow">&nbsp;</div>
-                        <div id="raiseDiceAmount" class="diceReserve"></div>
-                        <div class="arrowBase arrowDown lowerArrow">&nbsp;</div>
-                    </div>
-                    <div id="diceNum" class="diceColumn">
-                        <div class="arrowBase arrowUp raiseArrow">&nbsp;</div>
-                        <div id="raiseDiceNumber" class="diceReserve"></div>
-                        <div class="arrowBase arrowDown lowerArrow">&nbsp;</div>
-                    </div>
+            <div class="diceRaiseRow">
+                <div id="diceAmt" class="diceColumn">
+                    <div class="arrowBase arrowUp raiseArrow">&nbsp;</div>
+                    <div id="raiseDiceAmount" class="diceReserve"></div>
+                    <div class="arrowBase arrowDown lowerArrow">&nbsp;</div>
                 </div>
+                <div id="diceNum" class="diceColumn">
+                    <div class="arrowBase arrowUp raiseArrow">&nbsp;</div>
+                    <div id="raiseDiceNumber" class="diceReserve"></div>
+                    <div class="arrowBase arrowDown lowerArrow">&nbsp;</div>
+                </div>
+            </div>
+            <form id="turnFormRaise" action="/apifight/public/api/v1/game/move" type="post">
+
                 <div class="clear"></div>
                 <input id="dice_number" type="hidden" name="dice_number">
                 <input id="amount" type="hidden" name="amount">
@@ -50,10 +51,12 @@
     <div class="clear"></div>
 
     <div id="moveHistory"></div>
-
-    <div id="roundResult" class="white_content">
-        <div class="exit">X</div>
-        <div class="content"></div>
+    <div id="roundResultContainer">
+        <div id="roundResult" class="white_content">
+            <div class="exit">X</div>
+            <div class="content"></div>
+        </div>
+        <div class="black_overlay"></div>
     </div>
     <div id="output"></div>
 </div>

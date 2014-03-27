@@ -32,6 +32,7 @@ $(document).ready(function(){
 
     $('.white_content .exit').click(function(){
         $(this).parent('.white_content').hide();
+        $('.black_overlay').hide();
     });
 
     $('#diceAmt .raiseArrow').click(function(){
@@ -330,6 +331,7 @@ function roundEnd(lastRound){
 
             $('#roundResult .content').empty();
             $('#roundResult').show();
+            $('.black_overlay').show();
             $.ajax({
                 url: lastDiceUrl,
                 success: function(data){
@@ -361,6 +363,7 @@ function roundEnd(lastRound){
 
             toggleRoundOver = false;
             $('#roundResult').delay(20000).hide(1000);
+            $('.black_overlay').delay(20000).hide(1000);
         }
     }
 }
