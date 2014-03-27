@@ -200,4 +200,16 @@ svg.drawing {
  }.button:active {
       position:relative;
       top:1px;
+ }
+
+.inactive {
+    background-color: #D1D1D1;
+
+}
+.inactive:hover {
+     background-color:#D1D1D1;
+    cursor: default;
+}
+.inactive:active {
+    background-color:#D1D1D1;
   }

@@ -27,7 +27,9 @@ $(document).ready(function(){
 	});
 
     $('.button').click(function(){
-        $(this).parent('form').submit();
+        if(!$(this).hasClass('inactive')){
+            $(this).parent('form').submit();
+        }
     });
 
     $('.white_content .exit').click(function(){
@@ -176,6 +178,10 @@ function prepareBetArrows(){
         $('#diceNum .lowerArrow').css('visibility', 'hidden');
     }
 
+    if($('#diceNum .lowerArrow').css('visibility') == 'hidden' && $('#diceAmt .lowerArrow').css('visibility') == 'hidden'){
+        $('#turnFormRaise a').addClass('inactive');
+    }
+
 }
 
 function updateDiceAvailable(diceAvailable){
@@ -269,8 +275,6 @@ function updatePlayersTurn(player){
     } else {
         $('#turnForm').hide();
     }
-
-
 }
 
 
