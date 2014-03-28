@@ -167,8 +167,6 @@ function prepareBetArrows(){
     lastBetDice = parseInt(lastBetDice);
     lastBetAmount = parseInt(lastBetAmount);
 
-    console.log(lastBetAmount);
-
     $('#diceAmt .raiseArrow').css('visibility', 'visible');
     $('#diceAmt .lowerArrow').css('visibility', 'visible');
     $('#diceNum .raiseArrow').css('visibility', 'visible');
