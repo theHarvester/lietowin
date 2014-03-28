@@ -248,6 +248,8 @@ function loopDiceAvailable(diceAvailable){
 }
 
 function updatePlayersTurn(player){
+    $('.opponentsDice').css('background-color', '');
+    $('#diceAvailable .p_'+player+' .opponentsDice').css('background-color', '#6eb4da');
 
     if(!isEmpty(player)){
         currentPayersTurn = player;
