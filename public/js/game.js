@@ -13,6 +13,7 @@ var userInControl = false;
 var myBetAmount = 1;
 var myBetDice = 1;
 var totalDiceInPlay = 100;
+var lastGameState = {};
 
 // ensures the round over animation is only done once
 var toggleRoundOver = false;
@@ -90,31 +91,50 @@ function makeMove(form){
 
 function updateGame(gameState){
     if(gameState.round !== 'undefinded'){
-        updateRound(gameState.round);
+        if(gameState.round !== lastGameState.round){
+            updateRound(gameState.round);
+            lastGameState.round = gameState.round;
+        }
     }
 
 	if(gameState.playerOrder !== 'undefinded'){
-		updatePlayerOrder(gameState.playerOrder);
+        if(gameState.playerOrder !== lastGameState.playerOrder){
+            updatePlayerOrder(gameState.playerOrder);
+            lastGameState.playerOrder = gameState.playerOrder;
+        }
 	}
 
 	if(gameState.diceAvailable !== 'undefinded'){
-		updateDiceAvailable(gameState.diceAvailable);
+        if(gameState.diceAvailable !== lastGameState.diceAvailable){
+            updateDiceAvailable(gameState.diceAvailable);
+            lastGameState.diceAvailable = gameState.diceAvailable;
+        }
 	}
 
+    if(gameState.moves !== 'undefinded'){
+        if(gameState.moves !== lastGameState.moves){
+            updateMoves(gameState.moves);
+            lastGameState.moves = gameState.moves;
+        }
+    }
+
 	if(gameState.playersTurn !== 'undefinded'){
-		updatePlayersTurn(gameState.playersTurn);
+        if(gameState.playersTurn !== lastGameState.playersTurn){
+            updatePlayersTurn(gameState.playersTurn);
+            lastGameState.playersTurn = gameState.playersTurn;
+        }
 	}
 
     if(gameState.myDice !== 'undefinded'){
-        updateMyDice(gameState.myDice);
+        if(gameState.myDice !== lastGameState.myDice){
+            updateMyDice(gameState.myDice);
+            lastGameState.myDice = gameState.myDice;
+        }
     }
-	
-	if(gameState.moves !== 'undefinded'){
-		updateMoves(gameState.moves);
-	}
 
     if(gameState.lastRoundEnd !== 'undefinded'){
         roundEnd(gameState.lastRoundEnd);
+
     }
     isNewRound = false;
 }
@@ -146,6 +166,8 @@ function prepareBetArrows(){
     myBetDice = parseInt(myBetDice);
     lastBetDice = parseInt(lastBetDice);
     lastBetAmount = parseInt(lastBetAmount);
+
+    console.log(lastBetAmount);
 
     $('#diceAmt .raiseArrow').css('visibility', 'visible');
     $('#diceAmt .lowerArrow').css('visibility', 'visible');
@@ -258,8 +280,8 @@ function updatePlayersTurn(player){
     }
 
     if(currentPayersTurn == username){
-        prepareBetArrows();
-        $('#turnForm').show();
+//        prepareBetArrows();
+        console.log(userInControl);
 
         if(userInControl){
             $('#raiseDiceAmount').html(drawDie(myBetAmount + "x"));
@@ -282,6 +304,7 @@ function updatePlayersTurn(player){
                 myBetDice = 1;
             }
             prepareBetArrows();
+            $('#turnForm').show();
         }
 
     } else {
@@ -350,6 +373,7 @@ function roundEnd(lastRound){
             $('#roundResult').show();
             $('.black_overlay').show();
 
+            lastGameState = {};
             lastBetAmount = 0;
             lastBetDice = 0;
             $.ajax({
