@@ -184,6 +184,8 @@ function prepareBetArrows(){
 function prepareBetButtons() {
     if($('#diceNum .lowerArrow').css('visibility') == 'hidden' && $('#diceAmt .lowerArrow').css('visibility') == 'hidden'){
         $('#turnFormRaise a').addClass('inactive');
+    } else {
+        $('#turnFormRaise a').removeClass('inactive');
     }
 
     if(lastBetDice == 0 && lastBetAmount == 0){
@@ -249,10 +251,10 @@ function loopDiceAvailable(diceAvailable){
 
 function updatePlayersTurn(player){
     $('.opponentsDice').css('background-color', '');
-    $('#diceAvailable .p_'+player+' .opponentsDice').css('background-color', '#6eb4da');
 
     if(!isEmpty(player)){
         currentPayersTurn = player;
+        $('#diceAvailable .p_'+player+' .opponentsDice').css('background-color', '#6eb4da');
     }
 
     if(currentPayersTurn == username){
