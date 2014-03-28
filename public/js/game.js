@@ -184,6 +184,10 @@ function prepareBetArrows(){
         $('#diceAmt .lowerArrow').css('visibility', 'hidden');
     }
 
+    if(myBetAmount <= 1){
+        $('#diceAmt .lowerArrow').css('visibility', 'hidden');
+    }
+
     if(myBetDice < lastBetDice && myBetAmount == (lastBetAmount + 1)){
         $('#diceAmt .lowerArrow').css('visibility', 'hidden');
     }
@@ -196,7 +200,9 @@ function prepareBetArrows(){
     if(myBetDice <= 1){
         $('#diceNum .lowerArrow').css('visibility', 'hidden');
     }
+
     if(myBetAmount <= lastBetAmount && myBetDice <= lastBetDice){
+
         $('#diceNum .lowerArrow').css('visibility', 'hidden');
     }
 
@@ -280,12 +286,10 @@ function updatePlayersTurn(player){
     }
 
     if(currentPayersTurn == username){
-//        prepareBetArrows();
-        console.log(userInControl);
-
         if(userInControl){
             $('#raiseDiceAmount').html(drawDie(myBetAmount + "x"));
             $('#raiseDiceNumber').html(drawDie(myBetDice));
+            prepareBetArrows();
         } else {
             // it's your turn
             $('#turnForm').show();
