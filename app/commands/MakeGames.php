@@ -40,47 +40,76 @@ class MakeGames extends Command {
 		$queueing = Queueing::where('queued', true)->get();
 		$queuedCount = count($queueing->toArray());
 
-		if($queuedCount > 1){
-			$game = new Game;
-			$game->active = true;
-			$game->current_round = 1;
-			$game->save();
-			$newGame = $game->toArray();
-			$userArr = array();
-			foreach ($queueing->toArray() as $queue) {
-				$player = new GamePlayer;
-				$player->user_id = $queue['user_id'];
-				$player->game_id = $newGame['id'];
-				$player->save();
+		if($queuedCount > 2){
 
-				$userArr[] = $queue['user_id'];
+            $queueArr = $queueing->toArray();
 
-				//Unque the current player
-				$unqueuePlayer = Queueing::where('user_id', $queue['user_id'])
-					->where('queued', true)
-					->first();
-				$unqueuePlayer->queued = false;
-				$unqueuePlayer->save();
+            $counter = 0;
+            $nextSequence = 0;
+            $offset = 0;
+            do {
+                if($queuedCount % 5 == 0){
+                    // divide by 5
+                    $nextSequence = 5;
+                } elseif($queuedCount % 4 == 0){
+                    // divide by 4
+                    $nextSequence = 4;
+                } elseif($queuedCount % 3 == 0){
+                    // divide by 3
+                    $nextSequence = 3;
+                } elseif($queuedCount > 5) {
+                    // once by 5 and re-evaluate
+                    $nextSequence = 5;
+                }
 
-				//Roll the dice for the current player
-				$diceRoll = new Dice;
-				$diceRoll->game_id = $newGame['id'];
-				$diceRoll->user_id = $queue['user_id'];
+                if(($queuedCount - $nextSequence) > 2){
+                    $doProcess = true;
+                } else {
+                    $doProcess = false;
+                }
 
-				$diceFace = array();
-				for($i = 0; $i < 5; $i ++){
-					$diceFace[] =  rand(1,6);
-				}
-				$diceRoll->dice_face = implode(",", $diceFace);
-				$diceRoll->round = 1;
-				$diceRoll->dice_available = 5;
-				$diceRoll->save();
-			}
+                $game = new Game;
+                $game->active = true;
+                $game->current_round = 1;
+                $game->save();
+                $userArr = array();
 
-			$game->user_turn = $userArr[array_rand($userArr)];
-			$game->turn_order = implode(',', $userArr);
-			$game->save();
-			
+                for($i = (0 + $offset); $i < ($nextSequence + $offset); $i++){
+                    $player = new GamePlayer;
+                    $player->user_id = $queueArr[$i]['user_id'];
+                    $player->game_id = $game->id;
+                    $player->save();
+
+                    $userArr[] = $queueArr[$i]['user_id'];
+
+                    //Unque the current player
+                    $unqueuePlayer = Queueing::where('user_id', $queueArr[$i]['user_id'])
+                        ->where('queued', true)
+                        ->first();
+                    $unqueuePlayer->queued = false;
+                    $unqueuePlayer->save();
+
+                    //Roll the dice for the current player
+                    $diceRoll = new Dice;
+                    $diceRoll->game_id = $game->id;
+                    $diceRoll->user_id = $queueArr[$i]['user_id'];
+
+                    $diceFace = array();
+                    for($j = 0; $j < 5; $j ++){
+                        $diceFace[] =  rand(1,6);
+                    }
+                    $diceRoll->dice_face = implode(",", $diceFace);
+                    $diceRoll->round = 1;
+                    $diceRoll->dice_available = 5;
+                    $diceRoll->save();
+                }
+
+                $game->user_turn = $userArr[array_rand($userArr)];
+                $game->turn_order = implode(',', $userArr);
+                $game->save();
+
+                $offset += $nextSequence;
+            } while ($doProcess);
 		}
 	}
 

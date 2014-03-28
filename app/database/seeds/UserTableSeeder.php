@@ -20,6 +20,26 @@ class UserTableSeeder extends Seeder {
             'username' => 'bob',
             'password' => Hash::make('test')
         ));
+
+        User::create(array(
+            'username' => 'james',
+            'password' => Hash::make('test')
+        ));
+
+        User::create(array(
+            'username' => 'matt',
+            'password' => Hash::make('test')
+        ));
+
+        User::create(array(
+            'username' => 'john',
+            'password' => Hash::make('test')
+        ));
+
+        User::create(array(
+            'username' => 'smith',
+            'password' => Hash::make('test')
+        ));
     }
  
 }

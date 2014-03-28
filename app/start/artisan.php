@@ -13,3 +13,4 @@
 
 Artisan::add(new MakeGames);
 Artisan::add(new ClearGames);
+Artisan::add(new EndGames);
