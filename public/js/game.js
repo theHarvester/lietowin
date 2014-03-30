@@ -214,6 +214,10 @@ function prepareBetButtons() {
         $('#turnFormRaise a').removeClass('inactive');
     }
 
+    if(myBetAmount == (lastBetAmount + 1) && myBetDice == 1){
+        $('#turnFormRaise a').removeClass('inactive');
+    }
+
     if(lastBetDice == 0 && lastBetAmount == 0){
         $('#turnFormLie a').addClass('inactive');
         $('#turnFormPerfect a').addClass('inactive');
@@ -253,6 +257,7 @@ function loopDiceAvailable(diceAvailable){
                 elementToAppend += '<div class="username">'
                 elementToAppend += player;
                 elementToAppend += '</div>';
+                elementToAppend += '<div class="lastBet"></div>';
                 elementToAppend += '<div class="opponentsDice">&nbsp;</div>';
                 elementToAppend += '</div>';
                 $('#diceAvailable').append(elementToAppend);
@@ -322,19 +327,13 @@ function updatePlayerOrder(playerOrder){
 
 function updateMoves(moves){
 	for (var i in moves){
-		if($('#moveHistory .'+i).length == 0){
-			// draw for the first time
-			var elementToAppend = '<div class="'+i+'">';
-			elementToAppend += moves[i].username;
-			if(moves[i].call == "raise"){
-				elementToAppend += ' has bet ';
-				elementToAppend += moves[i].amount + ' ' + moves[i].diceFace + 's';
-                lastBetDice = moves[i].diceFace;
-                lastBetAmount = moves[i].amount;
-			}
-			elementToAppend += '</div>';
-			$('#moveHistory').append(elementToAppend);
-		}
+        var lastBetElem = $('#diceAvailable .p_'+moves[i].username+' .lastBet');
+        lastBetElem.empty();
+        lastBetElem.append(drawSmallDie(moves[i].amount+'x'));
+        lastBetElem.append(drawSmallDie(moves[i].diceFace));
+
+        lastBetDice = moves[i].diceFace;
+        lastBetAmount = moves[i].amount;
 	}
 }
 
@@ -459,6 +458,39 @@ function drawDie(dieNumber){
             break;
         default :
             die = $('#emptyDice').clone();
+            $(die).children('.textContent').text(dieNumber);
+            break;
+    }
+    die.removeAttr('id');
+
+    return die;
+}
+
+function drawSmallDie(dieNumber){
+    dieNumber = String(dieNumber);
+    var die = null;
+    switch (dieNumber)
+    {
+        case "1":
+            die = $('#diceSmall1').clone();
+            break;
+        case "2":
+            die = $('#diceSmall2').clone();
+            break;
+        case "3":
+            die = $('#diceSmall3').clone();
+            break;
+        case "4":
+            die = $('#diceSmall4').clone();
+            break;
+        case "5":
+            die = $('#diceSmall5').clone();
+            break;
+        case "6":
+            die = $('#diceSmall6').clone();
+            break;
+        default :
+            die = $('#emptyDiceSmall').clone();
             $(die).children('.textContent').text(dieNumber);
             break;
     }

@@ -2,7 +2,7 @@ body{
 	font-family: 'Fauna One', serif;
 	background-color:#3A5E93; 
 	color:#FFFFFF;
-
+    text-shadow:1px 1px 0px #5B676E;
 
     /*pull this out giggady*/
     -webkit-touch-callout: none;
@@ -15,11 +15,7 @@ body{
 
 #body-container{
     margin: auto;
-/*position:absolute;*/
-width:700px;
-/*left:50%;*/
-/*padding:30px 10px 30px 10px;*/
-/*margin-left:-450px;*/
+    width:700px;
 }
 
 .diceRaiseRow{
@@ -36,8 +32,6 @@ width:700px;
 
 .revealUsername {
     margin-top: 20px;
-    /*height: 50px;*/
-    /*background-color: blue;*/
 }
 
 #revealHeading {
@@ -47,7 +41,7 @@ width:700px;
 
 .white_content {
     display: none;
-    position: fixed;
+    position: absolute;
     top: 20px;
     width: 700px;
     margin-left: 50%;
@@ -61,7 +55,6 @@ width:700px;
 
 @media (max-width: 800px) {
     .white_content {
-        position: fixed;
         width: 84%;
         margin: 5%;
         left: 0;
@@ -150,6 +143,21 @@ body {
     font-weight: 900;
 }
 
+.diceSmall {
+    background: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 0px;
+    line-height: 50px;
+    text-align: center;
+    color: #353535;
+    font-size: 30px;
+    font-weight: 900;
+}
+
+
 .float {
     float: left;
 }
@@ -216,7 +224,7 @@ svg.drawing {
     width:270px;
     text-decoration:none;
     text-align:center;
-    text-shadow:1px 1px 0px #5196b8;
+
     margin: 10px;
 }.button:hover {
      background-color:#5aa6cc;
