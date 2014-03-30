@@ -128,9 +128,23 @@ class GameController extends BaseController {
                     $previousDice[$id]['dice'] = explode(',',$die['dice_face']);
                 }
 
+                $lastBets = Moves::join('users', 'users.id', '=', 'moves.user_id')
+                    ->where('game_id', '=', $gameId)
+                    ->where('round', '=', $game['current_round']-1)
+                    ->where('call', '=', 'raise')
+                    ->orderBy('moves.created_at', 'DESC')
+                    ->first();
+
+                $lastBet = array(
+                    'username' => $lastBets->username,
+                    'dice_number' => $lastBets->dice_number,
+                    'amount' => $lastBets->amount
+                );
+
                 return Response::json(array(
                         'error' => false,
-                        'previousDice' => $previousDice
+                        'previousDice' => $previousDice,
+                        'lastBet' => $lastBet
                     ),
                     200
                 );

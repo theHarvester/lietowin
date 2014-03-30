@@ -374,8 +374,6 @@ function roundEnd(lastRound){
             $('#roundResult').show();
             $('.black_overlay').show();
 
-            console.log(lastBetAmount, lastBetDice);
-
             lastGameState = {};
             lastBetAmount = 0;
             lastBetDice = 0;
@@ -384,7 +382,7 @@ function roundEnd(lastRound){
                 success: function(data){
                     console.log(data);
                     if(data.previousDice != 'undefined'){
-                        revealDice(data.previousDice);
+                        revealDice(data);
                     }
 
                 }, dataType: "json"
@@ -422,7 +420,12 @@ function revealDice(dice){
     var startRevealDice = '';
     var endRevealDice = '';
 
-    $(dice).each(function(){
+//    console.log(dice.lastBet);
+    var lastBet = '<div id="revealLastBet" class="clear">Last bet: ';
+    lastBet += dice.lastBet.username + drawSmallDie(dice.lastBet.amount+'x').html() + drawSmallDie(dice.lastBet.dice_number).html();
+    lastBet += '</div>';
+
+    $(dice.previousDice).each(function(){
         var lineHTML = '<div class="clear revealUsername">';
         if(this.username == username){
             lineHTML += 'You';
@@ -444,7 +447,7 @@ function revealDice(dice){
     });
     appendMe += startRevealDice + endRevealDice;
     appendMe += '</div>';
-    $('#roundResult .content').append(appendMe);
+    $('#roundResult .content').append(lastBet + appendMe);
 }
 
 
