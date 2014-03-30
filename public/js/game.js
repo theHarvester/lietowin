@@ -374,12 +374,15 @@ function roundEnd(lastRound){
             $('#roundResult').show();
             $('.black_overlay').show();
 
+            console.log(lastBetAmount, lastBetDice);
+
             lastGameState = {};
             lastBetAmount = 0;
             lastBetDice = 0;
             $.ajax({
                 url: lastDiceUrl,
                 success: function(data){
+                    console.log(data);
                     if(data.previousDice != 'undefined'){
                         revealDice(data.previousDice);
                     }
@@ -415,19 +418,31 @@ function roundEnd(lastRound){
 
 function revealDice(dice){
     var appendMe = '<div id="revealLastDice">';
+    var lineMyDice = false;
+    var startRevealDice = '';
+    var endRevealDice = '';
+
     $(dice).each(function(){
-        appendMe += '<div class="clear revealUsername">';
+        var lineHTML = '<div class="clear revealUsername">';
         if(this.username == username){
-            appendMe += 'You';
+            lineHTML += 'You';
+            lineMyDice = true;
         } else {
-            appendMe += this.username
+            lineHTML += this.username
         }
-        appendMe += '</div> <div class="diceRow">';
+        lineHTML += '</div> <div class="diceRow">';
         $(this.dice).each(function(){
-            appendMe += drawDie(this[0]).html() + " ";
+            lineHTML += drawDie(this[0]).html() + " ";
         });
-        appendMe += "</div>";
+        lineHTML += "</div>";
+
+        if(!lineMyDice){
+            endRevealDice += lineHTML;
+        } else {
+            startRevealDice += lineHTML;
+        }
     });
+    appendMe += startRevealDice + endRevealDice;
     appendMe += '</div>';
     $('#roundResult .content').append(appendMe);
 }
