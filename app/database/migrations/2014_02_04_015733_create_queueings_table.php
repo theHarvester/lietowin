@@ -28,7 +28,7 @@ class CreateQueueingsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('queueings');
+		Schema::drop('queueing');
 	}
 
 }

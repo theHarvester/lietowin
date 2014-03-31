@@ -49,4 +49,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->email;
 	}
 
+    public function games()
+    {
+        return $this->hasManyThrough('Users', 'game_users', 'client_checks');
+    }
+
 }

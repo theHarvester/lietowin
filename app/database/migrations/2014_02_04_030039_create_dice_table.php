@@ -18,6 +18,7 @@ class CreateDiceTable extends Migration {
 			$table->integer('user_id');
 			$table->integer('dice_available');
 			$table->string('dice_face');
+            $table->integer('round');
 			$table->timestamps();
 		});
 	}

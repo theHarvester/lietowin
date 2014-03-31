@@ -19,6 +19,9 @@ class CreateMovesTable extends Migration {
 			$table->enum('call',  array('lie', 'perfect', 'raise'));
 			$table->integer('amount');
 			$table->integer('dice_number');
+            $table->integer('loser_id')->nullable();
+            $table->string('move_guid');
+            $table->integer('round');
 			$table->timestamps();
 		});
 	}

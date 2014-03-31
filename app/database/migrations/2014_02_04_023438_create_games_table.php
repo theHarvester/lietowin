@@ -15,6 +15,9 @@ class CreateGamesTable extends Migration {
 		Schema::create('games', function(Blueprint $table) {
 			$table->increments('id');
 			$table->boolean('active');
+            $table->integer('user_turn');
+            $table->string('turn_order');
+            $table->integer('current_round');
 			$table->timestamps();
 		});
 	}
