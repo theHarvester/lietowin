@@ -18,6 +18,7 @@ class CreateGamesTable extends Migration {
             $table->integer('user_turn');
             $table->string('turn_order');
             $table->integer('current_round');
+            $table->integer('winner_id');
 			$table->timestamps();
 		});
 	}

@@ -17,11 +17,21 @@ class GameController extends BaseController {
 			if($game->active == true){
 				$turnOrder = array();
 
+				$gamePlayers = GamePlayer::where('game_id', '=', $gameId)
+					->where('still_playing', '=', true)
+					->get();
+				$currentPlayers = array();
+				foreach ($gamePlayers as $player) {
+					$currentPlayers[] = $player->user_id;
+				}
+				
 				foreach (explode(',', $game['turn_order']) as $playerId) {
-					$user = User::find($playerId);
-					$turnOrder[] = $user['username'];
-					if($game->user_turn == $playerId){
-						$playersTurn = $user['username'];
+					if(in_array($playerId, $currentPlayers)){
+						$user = User::find($playerId);
+						$turnOrder[] = $user['username'];
+						if($game->user_turn == $playerId){
+							$playersTurn = $user['username'];
+						}
 					}
 				}
 
@@ -39,14 +49,6 @@ class GameController extends BaseController {
 					->join('users', 'users.id', '=', 'moves.user_id')
 					->where('round', $game->current_round)
 					->get($columns);
-
-
-				
-				// var_dump($displayMoves);
-				// foreach ($moves as $key => $value) {
-				// 	var_dump($value->move_id);
-				// }
-				// 	die();
 
 				if(count($moves)){
 					foreach ($moves as $move) {
@@ -98,12 +100,22 @@ class GameController extends BaseController {
                     $lastRoundEnd['loser'] = User::find($lastRoundEndObj['loser_id'])->toArray()['username'];
                 }
 
+                $lostPlayers = GamePlayer::where('game_id', '=', $gameId)
+                	->join('users', 'users.id', '=', 'game_player.user_id')
+					->where('still_playing', '=', false)
+					->get();
+				$losers = array();
+				foreach ($lostPlayers as $loser) {
+					$losers[] = $loser->username;
+				}
+
 				return Response::json(array(
 			        'error' => false,
 			        'myDice' => $myDiceFace,
 			        'diceAvailable' => $diceAvailableArr,
 			        'playersTurn' => $playersTurn,
 			        'playerOrder' => $turnOrder,
+			        'losers' => $losers,
                     'round' => $game->current_round,
                     'lastRoundEnd' => $lastRoundEnd,
 			        'moves' => $displayMoves
@@ -197,6 +209,48 @@ class GameController extends BaseController {
 					->get()
 					->toArray();
 
+
+				$turnOrder = explode(',', $game['turn_order']);
+				$turnKey = array_search($userId, $turnOrder);
+				If((count($turnOrder)-1) == $turnKey){
+					$nextPlayerId = $turnOrder[0];
+				} else {
+					$nextPlayerId = $turnOrder[$turnKey+1];
+				}
+
+				$gamePlayers = GamePlayer::where('game_id', '=', $gameId)
+					->where('still_playing', '=', true)
+					->get();
+				$activePlayers = array();
+				$seekNextActive = true;
+
+				foreach ($gamePlayers as $player) {
+					if($nextPlayerId == $player->user_id){
+						$seekNextActive = false;
+					}
+					$activePlayers[] = $player->user_id;
+				}
+
+				$startLooking = false;
+
+				// this has to be a while because it needs to start searching in turn order so it needs to loop
+				while($seekNextActive){
+					foreach ($turnOrder as $userTurnId) {
+						// var_dump($userTurnId, $startLooking, '--------------');
+						if($startLooking){
+							if(in_array($userTurnId, $activePlayers)){
+								$seekNextActive = false;
+								$nextPlayerId = $userTurnId;
+								break;
+							}
+						} else {
+							if($userTurnId == $nextPlayerId){
+								$startLooking = true;
+							}
+						}
+					}
+				}
+
 				switch (Input::get('call')) {
 					case 'raise':
 
@@ -243,14 +297,6 @@ class GameController extends BaseController {
 							$myMove->move_guid = hash('ripemd160', uniqid());
 							$myMove->save();
 
-							$turnOrder = explode(',', $game['turn_order']);
-							$turnKey = array_search($userId, $turnOrder);
-							If((count($turnOrder)-1) == $turnKey){
-								$nextPlayerId = $turnOrder[0];
-							} else {
-								$nextPlayerId = $turnOrder[$turnKey+1];
-							}
-
 							$gameObj->user_turn = $nextPlayerId;
 							$gameObj->save();
 
@@ -266,13 +312,15 @@ class GameController extends BaseController {
 						}
 						foreach ($diceAvailable as $value) {
 							foreach(explode(',', $value['dice_face']) as $diceFace){
-								$diceTotals[$diceFace] = $diceTotals[$diceFace] + 1;
+								if(array_key_exists($diceFace, $diceTotals)){
+									$diceTotals[$diceFace] = $diceTotals[$diceFace] + 1;
+								}
 							}
 						}
 
 						$lastRaise = Moves::where('game_id', $gameId)
 							->where('round', $game['current_round'])
-							->orderBy('created_at', 'DESC')
+							->orderBy('id', 'DESC')
 							->first()
 							->toArray();
 
@@ -286,7 +334,8 @@ class GameController extends BaseController {
 								$playerLostId = $userId;
 							}
 						} else if (Input::get('call') == 'lie')  {
-							if($diceTotals[(int)$lastRaise['dice_number']] > (int)$lastRaise['amount']){
+							//if total 3s is more than the last bet
+							if($diceTotals[(int)$lastRaise['dice_number']] < (int)$lastRaise['amount']){
 								// this player wins the round, the last player loses
 								$playerLostId = $lastRaise['user_id'];
 
@@ -308,11 +357,15 @@ class GameController extends BaseController {
                         $move->save();
 
 						$this->endRound($gameId, $playerLostId, $diceAvailable);
+
 						$playerLost = User::find((int)$playerLostId);
 
 						$displayArr['diceTotals'] = $diceTotals;
 						$displayArr['playerLost'] = $playerLost['username'];
-						// $displayArr['']
+
+						$gameObj->user_turn = $nextPlayerId;
+						$gameObj->save();
+
 						break;
 				}
 			}
@@ -320,20 +373,6 @@ class GameController extends BaseController {
 			// it's not your turn fuck head
 
 		}
-
-//        return Response::json(array(
-//                'error' => false,
-//                'myDice' => $myDiceFace,
-//                'diceAvailable' => $diceAvailableArr,
-//                // 'playersTurn' => $game['user_turn'],
-//                'playersTurn' => $playersTurn,
-//                'playerOrder' => $turnOrder,
-//                // 'playerOrder' => explode(',', $game['turn_order']),
-//                'moves' => $displayMoves
-//            ),
-//            200
-//        );
-
 	}
 
 	private function endRound($gameId, $playerLoseId, $diceAvailable){
@@ -369,8 +408,30 @@ class GameController extends BaseController {
         return true;
 	}
 
-	private function playerLosesGame(){
+	private function playerLosesGame($loserId){
+		$gameId = Session::get('game_id');
+		$player = GamePlayer::where('game_id', '=', $gameId)
+			->where('user_id', '=', $loserId)
+			->first();
+		$player->still_playing = false;
+		$player->save();
 
+		$activePlayers = GamePlayer::where('game_id', '=', $gameId)
+			->where('still_playing', '=', true)
+			->get();
+		if(count($activePlayers) == 1){
+			foreach ($activePlayers as $winningPlayer) {
+				$this->declareWinner($winningPlayer->user_id);
+			}
+		}
+
+		return true;
+	}
+
+	private function declareWinner($winnerId){
+		$gameId = Session::get('game_id');
+		$game = Game::find($gameId);
+		$game->winner_id = $winnerId;
 	}
 
 }

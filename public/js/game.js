@@ -83,13 +83,18 @@ function makeMove(form){
         type: "POST",
         data: $(form).serialize(),
         success: function(data){
-//            console.log(data);
         }, dataType: "json"
     });
     userInControl = false;
 }
 
 function updateGame(gameState){
+    if(gameState.losers !== 'undefinded'){
+        if(gameState.losers !== lastGameState.losers){
+            lastGameState.losers = gameState.losers;
+        }
+    }
+
     if(gameState.round !== 'undefinded'){
         if(gameState.round !== lastGameState.round){
             updateRound(gameState.round);
@@ -380,7 +385,6 @@ function roundEnd(lastRound){
             $.ajax({
                 url: lastDiceUrl,
                 success: function(data){
-                    console.log(data);
                     if(data.previousDice != 'undefined'){
                         revealDice(data);
                     }
@@ -407,6 +411,9 @@ function roundEnd(lastRound){
                 $('#roundResult .content').html('<div id="revealHeading">' + roundWinner + ' called ' + lastRound.call + ' on ' + roundLoser + ' and won</div>');
             }
 
+            $('#turnFormRaise a').removeClass('inactive');
+            $('#turnFormPerfect a').removeClass('inactive');
+
             toggleRoundOver = false;
             $('#roundResult').delay(20000).hide(1000);
             $('.black_overlay').delay(20000).hide(1000);
@@ -420,7 +427,6 @@ function revealDice(dice){
     var startRevealDice = '';
     var endRevealDice = '';
 
-//    console.log(dice.lastBet);
     var lastBet = '<div id="revealLastBet" class="clear">Last bet: ';
     lastBet += dice.lastBet.username + drawSmallDie(dice.lastBet.amount+'x').html() + drawSmallDie(dice.lastBet.dice_number).html();
     lastBet += '</div>';
