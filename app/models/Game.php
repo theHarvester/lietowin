@@ -5,8 +5,8 @@ class Game extends Eloquent {
 	protected $guarded = array();
 	public static $rules = array();
 
-//    public function users()
-//    {
-//        return $this->hasManyThrough('Check', 'client_checks');
-//    }
+    public function users()
+    {
+        return $this->belongsToMany('User', 'game_player');
+    }
 }

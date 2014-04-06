@@ -78,6 +78,7 @@ class MakeGames extends Command {
                     $player = new GamePlayer;
                     $player->user_id = $queueArr[$i]['user_id'];
                     $player->game_id = $game->id;
+                    $player->still_playing = true;
                     $player->save();
 
                     $userArr[] = $queueArr[$i]['user_id'];

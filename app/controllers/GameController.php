@@ -13,34 +13,48 @@ class GameController extends BaseController {
 		$userId = Auth::user()->id;
 
 		if ($gameId != null) {
-			$game = Game::find($gameId)->toArray();
-			if($game['active'] == true){
+			$game = Game::find($gameId);
+			if($game->active == true){
 				$turnOrder = array();
 
 				foreach (explode(',', $game['turn_order']) as $playerId) {
 					$user = User::find($playerId);
 					$turnOrder[] = $user['username'];
-					if($game['user_turn'] == $playerId){
+					if($game->user_turn == $playerId){
 						$playersTurn = $user['username'];
 					}
 				}
 
+				$columns = array(
+				    DB::raw('moves.id as `move_id`'),
+				    DB::raw('moves.call as `move_call`'),
+				    DB::raw('moves.dice_number as `move_dice_num`'),
+				    DB::raw('moves.amount as `move_amount`'),
+				    DB::raw('users.username as `username`'),
+				);
 
 				// get all moves
                 $displayMoves = array();
 				$moves = Moves::where('game_id', $gameId)
 					->join('users', 'users.id', '=', 'moves.user_id')
-					->where('round', $game['current_round'])
-					->get()
-					->toArray();
+					->where('round', $game->current_round)
+					->get($columns);
+
+
+				
+				// var_dump($displayMoves);
+				// foreach ($moves as $key => $value) {
+				// 	var_dump($value->move_id);
+				// }
+				// 	die();
 
 				if(count($moves)){
 					foreach ($moves as $move) {
-						$displayMoves[$move['move_guid']] = array(
-							'call' => $move['call'],
-							'username' => $move['username'],
-							'diceFace' => $move['dice_number'],
-							'amount' => $move['amount']
+						$displayMoves[$move->move_id] = array(
+							'call' => $move->move_call,
+							'username' => $move->username,
+							'diceFace' => $move->move_dice_num,
+							'amount' => $move->move_amount
 						);
 					}
 				} else {
@@ -49,7 +63,7 @@ class GameController extends BaseController {
 
 				// get current dice face
 				$myDice = Dice::where('game_id', $gameId)
-					->where('round', $game['current_round'])
+					->where('round', $game->current_round)
 					->where('user_id', $userId)
 					->first();
 
@@ -58,7 +72,7 @@ class GameController extends BaseController {
 				// get all players amount of dice
 				$diceAvailable = Dice::where('game_id', $gameId)
 					->join('users', 'users.id', '=', 'dice.user_id')
-					->where('round', $game['current_round'])
+					->where('round', $game->current_round)
 					->get()
 					->toArray();
 
@@ -68,10 +82,10 @@ class GameController extends BaseController {
 				}
 
                 $lastRoundEnd = array();
-                if($game['current_round'] > 1){
+                if($game->current_round > 1){
                     $lastRoundEndObj = Moves::where('game_id', $gameId)
                         ->join('users', 'users.id', '=', 'moves.user_id')
-                        ->where('round', $game['current_round']-1)
+                        ->where('round', $game->current_round-1)
                         ->whereIn('call', array('perfect','lie'))
                         ->first()
                         ->toArray();
@@ -90,7 +104,7 @@ class GameController extends BaseController {
 			        'diceAvailable' => $diceAvailableArr,
 			        'playersTurn' => $playersTurn,
 			        'playerOrder' => $turnOrder,
-                    'round' => $game['current_round'],
+                    'round' => $game->current_round,
                     'lastRoundEnd' => $lastRoundEnd,
 			        'moves' => $displayMoves
 			        ),
@@ -101,6 +115,8 @@ class GameController extends BaseController {
 				//game's over
 			}
        	}
+
+
 	}
 
     /**
