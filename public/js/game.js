@@ -262,6 +262,7 @@ function drawDiceAvailable(diceAvailable){
         loopDiceAvailable(diceAvailable);
     }
 
+    loopDeadPlayers();
 
     totalDiceInPlay = 0;
     for (var dice in diceAvailable) {
@@ -304,6 +305,25 @@ function loopDiceAvailable(diceAvailable){
                 };
             }
         }
+    }
+}
+
+function loopDeadPlayers(){
+    for (var i in deadPlayers){
+        var player = deadPlayers[i];
+        if($('#diceAvailable .p_'+player).length == 0){
+            // draw for the first time
+            var elementToAppend = '<div class="p_'+player+'">';
+            elementToAppend += '<div class="username">'
+            elementToAppend += player;
+            elementToAppend += '</div>';
+            elementToAppend += '<div class="lastBet"></div>';
+            elementToAppend += '<div class="opponentsDice">&nbsp;</div>';
+            elementToAppend += '</div>';
+            $('#diceAvailable').append(elementToAppend);
+        }
+        $('#diceAvailable .p_'+player+' .opponentsDice').empty();
+        $('#diceAvailable .p_'+player+' .opponentsDice').append(drawDie('skull'));
     }
 }
 
