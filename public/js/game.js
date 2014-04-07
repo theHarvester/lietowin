@@ -369,7 +369,7 @@ function updateMyDice(dice){
         $('#myDice').empty();
         $('#myDice').append('<div class="username">You</div>');
         if(playerDead) {
-            $('#myDice').append(drawDie("&#9760;"));
+            $('#myDice').append(drawDie("skull"));
         } else {
             $(dice).each(function () {
                 $('#myDice').append(drawDie(this[0]));
@@ -469,7 +469,7 @@ function revealDice(dice){
             if(this[0] != undefined) {
                 lineHTML += drawDie(this[0]).html() + " ";
             } else {
-                lineHTML += drawDie("&#9760;").html() + " ";
+                lineHTML += drawDie("skull").html() + " ";
             }
         });
         lineHTML += "</div>";
@@ -512,8 +512,8 @@ function drawDie(dieNumber){
         default :
             die = $('#emptyDice').clone();
 
-            if(dieNumber == '&#9760;'){
-                $(die).children('.textContent').html(dieNumber);
+            if(dieNumber == 'skull'){
+                $(die).children('.textContent').html("&#9760;");
                 $(die).children('.textContent').css('font-size', '100px');
             } else {
                 $(die).children('.textContent').text(dieNumber);
