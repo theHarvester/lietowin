@@ -366,9 +366,11 @@ function updateMoves(moves){
 
 function updateMyDice(dice){
     if(isNewRound){
-        if(!playerDead) {
-            $('#myDice').empty();
-            $('#myDice').append('<div class="username">You</div>');
+        $('#myDice').empty();
+        $('#myDice').append('<div class="username">You</div>');
+        if(playerDead) {
+            $('#myDice').append(drawDie("&#9760;"));
+        } else {
             $(dice).each(function () {
                 $('#myDice').append(drawDie(this[0]));
             });
@@ -464,7 +466,11 @@ function revealDice(dice){
         }
         lineHTML += '</div> <div class="diceRow">';
         $(this.dice).each(function(){
-            lineHTML += drawDie(this[0]).html() + " ";
+            if(this[0] != undefined) {
+                lineHTML += drawDie(this[0]).html() + " ";
+            } else {
+                lineHTML += drawDie("&#9760;").html() + " ";
+            }
         });
         lineHTML += "</div>";
 
@@ -505,7 +511,13 @@ function drawDie(dieNumber){
             break;
         default :
             die = $('#emptyDice').clone();
-            $(die).children('.textContent').text(dieNumber);
+
+            if(dieNumber == '&#9760;'){
+                $(die).children('.textContent').html(dieNumber);
+                $(die).children('.textContent').css('font-size', '100px');
+            } else {
+                $(die).children('.textContent').text(dieNumber);
+            }
             break;
     }
     die.removeAttr('id');
