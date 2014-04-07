@@ -14,6 +14,8 @@ var myBetAmount = 1;
 var myBetDice = 1;
 var totalDiceInPlay = 100;
 var lastGameState = {};
+var deadPlayers = Array();
+var playerDead = false;
 
 // ensures the round over animation is only done once
 var toggleRoundOver = false;
@@ -231,6 +233,26 @@ function prepareBetButtons() {
 
 function updateDiceAvailable(diceAvailable){
     if(isNewRound){
+        deadPlayers = Array();
+        playerDead = false;
+        for (var i in diceAvailable) {
+            if (!parseInt(diceAvailable[i])) {
+                deadPlayers.push(i);
+                if (i == username) {
+                    playerDead = true;
+                }
+            }
+        }
+        drawDiceAvailable(diceAvailable);
+    }
+
+}
+
+function drawDiceAvailable(diceAvailable){
+    if(playerDead) {
+        renderPlayers = true;
+        loopDiceAvailable(diceAvailable);
+    } else {
         renderPlayers = false;
         // we need to start with the player logged in
         // so we loop to that player and start drawing
@@ -238,13 +260,13 @@ function updateDiceAvailable(diceAvailable){
         // the player again
         loopDiceAvailable(diceAvailable);
         loopDiceAvailable(diceAvailable);
-
-        totalDiceInPlay = 0;
-        for (var dice in diceAvailable) {
-            totalDiceInPlay += parseInt(diceAvailable[dice]);
-        }
     }
 
+
+    totalDiceInPlay = 0;
+    for (var dice in diceAvailable) {
+        totalDiceInPlay += parseInt(diceAvailable[dice]);
+    }
 }
 
 function loopDiceAvailable(diceAvailable){
@@ -344,12 +366,13 @@ function updateMoves(moves){
 
 function updateMyDice(dice){
     if(isNewRound){
-        $('#myDice').empty();
-        $('#myDice').append('<div class="username">You</div>');
-        $(dice).each(function(){
-
-            $('#myDice').append(drawDie(this[0]));
-        });
+        if(!playerDead) {
+            $('#myDice').empty();
+            $('#myDice').append('<div class="username">You</div>');
+            $(dice).each(function () {
+                $('#myDice').append(drawDie(this[0]));
+            });
+        }
     }
 }
 
