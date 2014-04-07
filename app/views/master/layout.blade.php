@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lie To Win</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    {{HTML::style('css/style.css')}}
+    {{HTML::style('css/normalize.css')}}
+    @if(Route::currentRouteName() == 'play')
+        {{HTML::style('css/game.css')}}
+    @else
+        {{HTML::style('css/page.css')}}
+    @endif
     <link href='http://fonts.googleapis.com/css?family=Fauna+One' rel='stylesheet' type='text/css'>
     <script type="text/javascript">
         var urlPathPrefix = "{{url('/', $parameters = array(), $secure = null)}}";

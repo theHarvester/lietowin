@@ -2,16 +2,12 @@
 
 @section('body')
 
-<div class="l-content">
-    <div class="information pure-g-r">
-    	@if(Session::has('flash_error'))
-    		<div class="pure-u-1-1">
-            	<div id="flash_notice">{{ Session::get('flash_error') }}</div>
-        	</div>
-        @endif
-
+<div id="body-container">
+    <div id="body-header">Lie to Win</div>
+    <div id="body-content">
         @yield('content')
     </div>
+    <div id="body-footer">Footer stuff</div>
 </div>
 
 

@@ -1,7 +1,6 @@
 body {
-	font-family: 'Roboto', sans-serif;
-	font-weight: 400;
-	color: #45484A;
+    font-family: 'Fauna One', serif;
+    text-shadow:1px 1px 0px #5B676E;
 }
 
 h2, h3 {
@@ -12,4 +11,51 @@ h2, h3 {
 
 p {
     line-height: 1.6em;
+}
+
+
+
+#body-container{
+    margin: auto;
+    width:1000px;
+}
+
+#body-header {
+    color:#FFFFFF;
+    height: 500px;
+    text-align: center;
+    font-size: 50pt;
+}
+
+#body-header:before {
+    background-color:#3A5E93;
+    content: '';
+    display: block;
+    width: 2000%;
+    height: 500px;
+    position: absolute;
+    left: -1000%;
+    z-index: -1;
+    /*background-color:red;*/
+}
+
+#body-content {
+    height: 600px;
+}
+
+
+#body-footer {
+    color:#FFFFFF;
+    height: 600px;
+}
+
+#body-footer:before {
+    content: '';
+    display: block;
+    width: 2000%;
+    height: 600px;
+    position: absolute;
+    left: -1000%;
+    z-index: -1;
+    background-color:#575757;
 }

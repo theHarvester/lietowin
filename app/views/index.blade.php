@@ -1,6 +1,8 @@
 @extends('master.page')
 
 @section('content')
+
+
 @if(!Auth::check())
     <div class="pure-u-1-2">
         <h3 class="information-head">Login</h3>
