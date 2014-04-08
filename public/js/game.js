@@ -529,15 +529,12 @@ function drawDie(dieNumber){
         case "6":
             die = $('#dice6').clone();
             break;
+        case "skull":
+            die = $('#diceSkull').clone();
+            break;
         default :
             die = $('#emptyDice').clone();
-
-            if(dieNumber == 'skull'){
-                $(die).children('.textContent').html("&#9760;");
-                $(die).children('.textContent').css('font-size', '100px');
-            } else {
-                $(die).children('.textContent').text(dieNumber);
-            }
+            $(die).children('.textContent').text(dieNumber);
             break;
     }
     die.removeAttr('id');
