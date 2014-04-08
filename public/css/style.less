@@ -1,0 +1,99 @@
+/**
+ *  Global styles and mixins
+ */
+
+@darker: rgb(0, 104, 90);
+@base: rgb(0, 160, 138);
+
+
+
+//@darker: rgb(0, 104, 90);
+@dark: lighten(@darker, 2);
+
+//@base: rgb(0, 160, 138);
+@light: lighten(@base, 3);
+@lighter: lighten(@base, 6);
+//@lighter: rgb(93, 208, 192);
+
+@grey: #424242;
+@gray_light: lighten(@grey, 3);
+
+.box_shadow(){
+  -webkit-box-shadow: 2px 2px 10px 1px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow:    2px 2px 10px 1px rgba(50, 50, 50, 0.75);
+  box-shadow:         2px 2px 10px 1px rgba(50, 50, 50, 0.75);
+}
+
+@font-face {
+  font-family: 'ComicNeue-Angular-Light';
+  src: url('fonts/ComicNeue-Angular-Light.eot');
+  src: url('fonts/ComicNeue-Angular-Light.eot') format('eot'),
+  url('fonts/ComicNeue-Angular-Light.woff') format('woff'),
+  url('fonts/ComicNeue-Angular-Light.ttf') format('ttf');
+}
+
+body {
+  font-family: 'ComicNeue-Angular-Light', Arial, sans-serif;
+  text-shadow: 1px 1px 0px #5B676E;
+//  background-color: @dark;
+  background: @base url('../img/bg-tile-star.png');
+  color:white;
+  font-size: 15pt;
+}
+
+.button {
+  background-color: @light;
+  text-indent: 0;
+  display: inline-block;
+  color: #ffffff;
+  font-size: 15pt;
+  font-weight: normal;
+  font-style: normal;
+  height: 65px;
+  line-height: 65px;
+  width: 270px;
+  text-decoration: none;
+  text-align: center;
+
+  .box_shadow()
+}
+
+.button:hover {
+  background-color: @lighter;
+}
+
+.button:active {
+  position: relative;
+  top: 1px;
+}
+
+.content-container {
+  margin: auto;
+  width: 1000px;
+}
+
+#body-header {
+  color: #FFFFFF;
+  background-color: @darker;
+  height: 500px;
+  text-align: center;
+  font-size: 50pt;
+  box-shadow: 0px 0px 10px 0px #2B2B2B;
+}
+
+#header-text {
+  padding-top: 200px;
+}
+
+#body-content {
+  height: 600px;
+}
+
+#body-footer {
+  color: #FFFFFF;
+  height: 300px;
+  background-color: @grey;
+  padding: 50px;
+
+  .box_shadow()
+}

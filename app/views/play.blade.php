@@ -7,6 +7,7 @@
     var username = "{{ $username }}";
 </script>
 <div id="body-container">
+    <div><h1>Lie to Win</h1></div>
     <div id="currentlyQueued">You are in the queue, please wait while we find you a game.</div>
     <div id="turnFormContainer">
         <div id="turnForm">
