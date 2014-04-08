@@ -31,7 +31,9 @@
 
     </div>
 @else
-    {{ link_to('play', 'Play') }}
 
+    <div class="main-button section">
+        {{ link_to('play', 'Play', array('class' =>'button')) }}
+    </div>
 @endif
 @stop

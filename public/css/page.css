@@ -15,28 +15,21 @@ p {
 
 
 
-#body-container{
+.content-container{
     margin: auto;
     width:1000px;
 }
 
 #body-header {
     color:#FFFFFF;
+    background-color:#3A5E93;
     height: 500px;
     text-align: center;
     font-size: 50pt;
 }
 
-#body-header:before {
-    background-color:#3A5E93;
-    content: '';
-    display: block;
-    width: 2000%;
-    height: 500px;
-    position: absolute;
-    left: -1000%;
-    z-index: -1;
-    /*background-color:red;*/
+#header-text {
+    padding-top: 200px;
 }
 
 #body-content {
@@ -46,16 +39,45 @@ p {
 
 #body-footer {
     color:#FFFFFF;
-    height: 600px;
+    height: 300px;
+    background-color:#363636;
 }
 
-#body-footer:before {
-    content: '';
-    display: block;
-    width: 2000%;
-    height: 600px;
-    position: absolute;
-    left: -1000%;
-    z-index: -1;
-    background-color:#575757;
+.button {
+    background-color:#6eb4da;
+    text-indent:0;
+    display:inline-block;
+    color:#ffffff;
+    font-size:15pt;
+    font-weight:normal;
+    font-style:normal;
+    height:65px;
+    line-height:65px;
+    width:270px;
+    text-decoration:none;
+    text-align:center;
+
+    margin: 10px;
+}.button:hover {
+     background-color:#5aa6cc;
+}.button:active {
+  position:relative;
+  top:1px;
+}
+
+.main-button {
+    margin: auto;
+    width: 370px;
+}
+
+.main-button .button {
+    width: 370px;
+    height:105px;
+    line-height:105px;
+    font-size: 32pt;
+}
+
+.section {
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
