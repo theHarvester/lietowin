@@ -10,6 +10,7 @@
         {{HTML::style('css/game.less', array('type' => 'text/less'))}}
     @else
         {{HTML::style('css/page.less', array('type' => 'text/less'))}}
+        {{HTML::script('js/page.js')}}
     @endif
 
     <link href='http://fonts.googleapis.com/css?family=Fauna+One' rel='stylesheet' type='text/css'>
