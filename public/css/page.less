@@ -1,10 +1,5 @@
 @import "style.less";
 
-h2, h3 {
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
 p {
   line-height: 1.6em;
 }
@@ -25,4 +20,27 @@ p {
 .section {
   margin-top: 50px;
   margin-bottom: 50px;
+  text-align: center;
+}
+
+.section-header {
+  font-size: 32pt;
+}
+
+.section-3-1 {
+  width: 270px;
+  margin: 31px;
+  float: left;
+  background-color: @darker;
+  padding: 20px 0px;
+  .box_shadow()
+}
+
+.delay-1 {
+//  -vendor-animation-delay: 2s;
+  -webkit-animation-delay:1s;
+}
+.delay-2 {
+  //  -vendor-animation-delay: 2s;
+  -webkit-animation-delay:2s;
 }

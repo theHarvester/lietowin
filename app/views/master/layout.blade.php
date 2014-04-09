@@ -6,6 +6,7 @@
     <title>Lie To Win</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     {{HTML::style('css/normalize.css')}}
+    {{HTML::style('css/animate.css')}}
     @if(Route::currentRouteName() == 'play')
         {{HTML::style('css/game.less', array('type' => 'text/less'))}}
     @else
