@@ -28,14 +28,6 @@ body{
   display: none;
 }
 
-.content-container{
-    margin: 30px auto;
-    width: 700px;
-  padding: 50px 100px;
-  background-color: @darker;
-  .box_shadow()
-}
-
 .diceRaiseRow{
     height: 220px;
     margin-bottom: 0;
@@ -129,7 +121,6 @@ body {
 }
 
 svg.drawing {
-    /*background-color: blue;*/
     margin: 5px;
 }
 
@@ -148,15 +139,30 @@ svg.drawing {
     }
 }
 
-
 .arrowUp {
-    border-bottom: 45px solid #353535;
+    border-bottom: 45px solid @theme_green_opposite;
     margin-left: 20px;
 }
 
 .arrowDown {
-    border-top: 45px solid #353535;
+    border-top: 45px solid @theme_green_opposite;
     margin-left: 20px;
+}
+
+.arrowUp:hover {
+  border-bottom: 45px solid @theme_green_opposite_light;
+}
+
+.arrowDown:hover {
+  border-top: 45px solid @theme_green_opposite_light;
+}
+
+.arrowUp:active {
+  border-bottom: 45px solid @theme_green_opposite_dark;
+}
+
+.arrowDown:active {
+  border-top: 45px solid @theme_green_opposite_dark;
 }
 
 .arrowBase {
@@ -188,4 +194,8 @@ svg.drawing {
 }
 .inactive:active {
     background-color:#D1D1D1;
-  }
+}
+
+.playersTurn {
+  background-color: @theme_green_base_dark;
+}

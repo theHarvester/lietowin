@@ -330,11 +330,11 @@ function loopDeadPlayers(){
 }
 
 function updatePlayersTurn(player){
-    $('.opponentsDice').css('background-color', '');
+    $('.opponentsDice').removeClass('playersTurn');
 
     if(!isEmpty(player)){
         currentPayersTurn = player;
-        $('#diceAvailable .p_'+player+' .opponentsDice').css('background-color', '#6eb4da');
+        $('#diceAvailable .p_'+player+' .opponentsDice').addClass('playersTurn');
     }
 
     if(currentPayersTurn == username){
