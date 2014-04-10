@@ -12,10 +12,12 @@
 //
 ////@theme_green_base: rgb(54, 215, 146);
 ////@theme_green_opposite: rgb(255, 118, 64);
-@theme_green_base: rgb(54, 215, 146);
-@theme_green_base_light: lighten(@theme_green_base, 10);
+
 @theme_green_opposite: rgb(255, 118, 64);
 @theme_green_opposite_light: lighten(@theme_green_opposite,10);
+
+@theme_green_base: darken(spin(@theme_green_opposite,180),0);
+@theme_green_base_light: lighten(@theme_green_base, 10);
 
 //@theme_blue_opposite
 
@@ -82,12 +84,13 @@
   url('fonts/ComicNeue-Angular-Light.ttf') format('ttf');
 }
 
+.clear {
+  clear:both;
+}
+
 body {
   font-family: 'ComicNeue-Angular-Light', Arial, sans-serif;
   text-shadow: 1px 1px 0px #5B676E;
-//  background: @base url('../img/bg-tile-star.png');
-//    background: @base url('../img/bg-wood-2.jpg');
-//  background: @base;
   color:white;
   font-size: 15pt;
 }
@@ -105,10 +108,6 @@ body {
   width: 270px;
   text-decoration: none;
   text-align: center;
-
-//  .transition-1s()
-
-//  .box_shadow()
 }
 
 .button:hover {

@@ -7,8 +7,10 @@
             <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" class="drawing">
                 <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
                 <g>
-                    <title>arrow</title>
-                    <polygon stroke-width="0" stroke="#000000" points="30.971576690673828,20.5 8.51421070098877,33.46576690673828 8.51421070098877,7.534233093261719 30.971576690673828,20.5 " fill="#ffffff" id="svg_6"/>
+                    <title>arrow2</title>
+                    <line id="svg_2" y2="34.04323" x2="8.25" y1="8" x1="8.25" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="2" stroke="#ffffff" fill="none"/>
+                    <line stroke="#ffffff" id="svg_3" y2="34.66667" x2="7.66667" y1="20.41667" x1="30.75" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="2" fill="none"/>
+                    <line stroke="#ffffff" id="svg_4" y2="21.16667" x2="30.75" y1="7" x1="7.75" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="2" fill="none"/>
                 </g>
             </svg>
         </div>
@@ -110,24 +112,42 @@
     </div>
     <div id="body-content" class="page">
         <div class="content-container">
-            Content
-        </div>
-        <div class="section">
-            <div class="section-header">How to play</div>
-            <div class="section-3-1 flipMe">
-                Raise
-            </div>
-            <div class="section-3-1 flipMe delay-1">
-                Spot on
-            </div>
-            <div class="section-3-1 flipMe delay-2">
-                Lie
+            <div class="section">
+                <div class="section-header">How to play</div>
+                <div class="section-1-1">
+                    <p>Each player takes turns making one of three calls. On their turn, a player must make a call based off the previous bet and all of the dice combined. So if a players bets 3 3’s, they are betting there are at least 3 3’s in all of the dice from all players. If a player loses a round, they lose a die. The last player with dice remaining, wins the game.</p>
+                </div>
+
+                <div class="section-3-1 flipMe">
+                    Raise
+                    <hr />
+                    <p>
+                        Increases the bet. Players can bet the same amount of dice providing the dice face is higher or they can raise the amount and chose any dice face.
+                    </p>
+                </div>
+                <div class="section-3-1 flipMe delay-1">
+                    Spot on
+                    <hr />
+                    <p>
+                        A player who calls spot on will only win the round if the last bet is exactly right. The losing player will lose a die.
+                    </p>
+                </div>
+                <div class="section-3-1 flipMe delay-2">
+                    Lie
+                    <hr />
+                    <p>
+                        The calling player will win the round if the last bet was higher than the amount in all of the dice combined. The losing player loses a die.
+                    </p>
+                </div>
+                <div class="clear"></div>
             </div>
         </div>
     </div>
     <div id="body-footer" class="page">
         <div class="content-container">
-            Footer stuff
+            <div class="section">
+                <div class="section-header">About</div>
+            </div>
         </div>
     </div>
 </div>

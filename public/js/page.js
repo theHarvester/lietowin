@@ -45,9 +45,9 @@ $(document).ready(function(){
         }
     });
     middlePageTriggered = false;
-    pageHeight = $(window).height() + 30;
-    middlePageStart = pageHeight - 10;
-    middlePageEnd = (pageHeight * 2) - 10;
+    pageHeight = $(window).height() + 100;
+    middlePageStart = pageHeight - 100;
+    middlePageEnd = (pageHeight * 2) - 100;
     $('.page').css('height', pageHeight);
 
     $(function() {
@@ -69,7 +69,7 @@ $(document).ready(function(){
                 // do the scroll
                 $('html, body').animate({
                     scrollTop: elem.offset().top
-                }, 1000 );
+                }, 500 );
 
             }
         };
