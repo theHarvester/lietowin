@@ -8,11 +8,16 @@ body{
     -ms-user-select: none;
     user-select: none;
 
-  background: @base url('../img/bg-tile-star.png');
+  background: @theme_green_base;
 }
 
 .button {
   margin: 10px;
+  background: @theme_green_opposite;
+
+}
+.button:hover {
+  background: @theme_green_opposite_light;
 }
 
 #body-footer {
@@ -130,6 +135,11 @@ svg.drawing {
 
 #diceSvg {
     display: none;
+}
+
+#body-container{
+  width:700px;
+  margin: auto;
 }
 
 @media all and (max-width: 900px) {
