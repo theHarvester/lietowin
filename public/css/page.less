@@ -31,9 +31,8 @@ p {
   width: 270px;
   margin: 31px;
   float: left;
-  background-color: @darker;
+  background-color: @theme_green_opposite;
   padding: 20px 0px;
-  .box_shadow()
 }
 
 .delay-1 {
@@ -43,4 +42,56 @@ p {
 .delay-2 {
   //  -vendor-animation-delay: 2s;
   -webkit-animation-delay:2s;
+}
+
+.page:nth-child(1){
+  background-color: @theme_green_opposite;
+}
+
+.page:nth-child(1) .button{
+  background-color: @theme_green_base;
+}
+
+.page:nth-child(2){
+  background-color: @theme_green_base;
+}
+
+.page:nth-child(2) .button{
+  background-color: @theme_green_opposite;
+}
+
+.page:nth-child(3){
+  background-color: @theme_green_opposite;
+}
+
+.page:nth-child(3) .button{
+  background-color: @theme_green_base;
+}
+
+#top-menu {
+  position: fixed;
+}
+.side-popout-btn {
+  width: 270px;
+  margin-top: 5px;
+  margin-left: -220px;
+  z-index: 999;
+  .transition_margin_left()
+}
+.side-popout-btn .icon-svg {
+  z-index: 1000;
+  position: absolute;
+  left:5px;
+  margin-top: 10px;
+  .transition_pos_left()
+}
+
+.side-popout-btn:hover {
+  margin-left:0px;
+  .transition_margin_left()
+}
+
+.side-popout-btn:hover .icon-svg {
+  left:230px;
+  .transition_pos_left()
 }
