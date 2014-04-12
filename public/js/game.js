@@ -2,6 +2,7 @@ var queueUrl = window.urlPathPrefix + "/api/v1/queue";
 var gameUrl = window.urlPathPrefix + "/api/v1/game";
 var moveUrl = window.urlPathPrefix + "/api/v1/game/move";
 var lastDiceUrl = window.urlPathPrefix + "/api/v1/game/dice";
+var gameId = 0;
 var currentRound = 1;
 var lastCelebratedRound = 0;
 var playerOrder;
@@ -57,24 +58,38 @@ $(document).ready(function(){
 });
 
 setInterval(function(){
-    $.ajax({ 
-    	url: queueUrl, 
-    	success: function(data){
-            if(data.queued == true){
-                currentlyQueued(true);
-            } else if(data.game_id !== 'undefinded'){
-                currentlyQueued(false);
-	        	$.ajax({
-				  	url: gameUrl,
-				  	success: function(game){
-				  		updateGame(game);
-				  	},
-				  	dataType: "json"
-				});
-	        }
-    	}, dataType: "json"
-	});
+    console.log(gameId);
+    if(gameId != 0){
+        $.ajax({
+            url: gameUrl,
+            success: function(game){
+                updateGame(game);
+            },
+            dataType: "json"
+        });
+    } else {
+        $.ajax({
+            url: queueUrl,
+            success: function(data){
+                if(data.queued == true){
+                    currentlyQueued(true);
+                } else if(data.game_id !== 'undefinded'){
+                    gameId = data.game_id;
+                    currentlyQueued(false);
+                    $.ajax({
+                        url: gameUrl,
+                        success: function(game){
+                            updateGame(game);
+                        },
+                        dataType: "json"
+                    });
+
+                }
+            }, dataType: "json"
+        });
+    }
 }, 2000);
+
 
 function makeMove(form){
     $('#turnForm').hide();
@@ -143,7 +158,16 @@ function updateGame(gameState){
         roundEnd(gameState.lastRoundEnd);
 
     }
+
+    if(gameState.winnerId !== 'undefinded'){
+        roundEnd(gameState.winnerId);
+
+    }
     isNewRound = false;
+}
+
+function gameOver(winner) {
+    alert(winner);
 }
 
 function changeBet(diff){
