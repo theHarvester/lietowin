@@ -361,6 +361,7 @@ function updatePlayersTurn(player){
     }
 
     if(currentPayersTurn == username){
+        $('#myDiceRow').addClass('playersTurn');
         if(userInControl){
             $('#raiseDiceAmount').html(drawDie(myBetAmount + "x"));
             $('#raiseDiceNumber').html(drawDie(myBetDice));
@@ -390,6 +391,7 @@ function updatePlayersTurn(player){
         }
 
     } else {
+        $('#myDiceRow').removeClass('playersTurn');
         $('#turnForm').hide();
     }
 }
@@ -414,13 +416,13 @@ function updateMoves(moves){
 
 function updateMyDice(dice){
     if(isNewRound){
-        $('#myDice').empty();
-        $('#myDice').append('<div class="username">You</div>');
+        $('#myDiceRow').empty();
+        $('#myDiceName').show();
         if(playerDead) {
-            $('#myDice').append(drawDie("skull"));
+            $('#myDiceRow').append(drawDie("skull"));
         } else {
             $(dice).each(function () {
-                $('#myDice').append(drawDie(this[0]));
+                $('#myDiceRow').append(drawDie(this[0]));
             });
         }
     }
@@ -429,8 +431,11 @@ function updateMyDice(dice){
 function currentlyQueued(isQueued){
     if(isQueued){
         $('#currentlyQueued').show();
+        $('#turnForm').hide();
+        $('#myDice').hide();
     } else {
         $('#currentlyQueued').hide();
+        $('#myDice').show();
     }
 }
 
