@@ -58,7 +58,6 @@ $(document).ready(function(){
 });
 
 setInterval(function(){
-    console.log(gameId);
     if(gameId != 0){
         $.ajax({
             url: gameUrl,
@@ -134,7 +133,7 @@ function updateGame(gameState){
 	}
 
     if(gameState.moves !== 'undefinded'){
-        if(gameState.moves !== lastGameState.moves){
+        if(JSON.stringify(gameState.moves) !== JSON.stringify(lastGameState.moves)){
             updateMoves(gameState.moves);
             lastGameState.moves = gameState.moves;
         }
@@ -449,6 +448,7 @@ function roundEnd(lastRound){
             $('#roundResult .content').empty();
             $('#roundResult').show();
             $('.black_overlay').show();
+            $('#diceAvailable .lastBet').empty();
 
             lastGameState = {};
             lastBetAmount = 0;
