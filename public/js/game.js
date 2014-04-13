@@ -367,6 +367,9 @@ function updatePlayersTurn(player){
             prepareBetArrows();
         } else {
             // it's your turn
+            $('#turnFormRaise a').removeClass('inactive');
+            $('#turnFormLie a').removeClass('inactive');
+            $('#turnFormPerfect a').removeClass('inactive');
             $('#turnForm').show();
             if(lastBetAmount > 0){
                 $('#raiseDiceAmount').html(drawDie(lastBetAmount + "x"));
@@ -483,6 +486,7 @@ function roundEnd(lastRound){
             }
 
             $('#turnFormRaise a').removeClass('inactive');
+            $('#turnFormLie a').removeClass('inactive');
             $('#turnFormPerfect a').removeClass('inactive');
 
             toggleRoundOver = false;
