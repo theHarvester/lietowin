@@ -40,6 +40,31 @@ Route::get('account/login', array('as' => 'login', function () {
     return View::make('account.login');
 }))->before('guest');
 
+Route::post('account/guest', array('as' => 'login', function () {
+    $lastGuest = User::whereRaw('username REGEXP \'^Guest\'')->orderBy('created_at','desc')->take(1)->first();
+    $tmpNum = 1 + intval(str_replace("Guest", "", $lastGuest->username));
+    $tmpUser = 'Guest'.$tmpNum;
+    $tmpPass = rand(1,10000000);
+
+    $newGuest = array(
+        'username' => $tmpUser,
+        'password' => $tmpPass
+    );
+
+    User::create(array(
+        'username' => $tmpUser,
+        'password' => Hash::make($tmpPass)
+    ));
+
+    if (Auth::attempt($newGuest)) {
+        return Redirect::route('play');
+    } else {
+        //todo: log an error
+        return Redirect::route('home')
+            ->with('flash_notice', 'Something went wrong');
+    }
+}));
+
 Route::post('account/login', function () {
     $user = array(
         'username' => Input::get('username'),

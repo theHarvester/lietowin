@@ -74,7 +74,7 @@
                     <div class="lb-form-container">
                         <h3>Create guest account</h3>
 
-                        {{ Form::open(array('url' => 'account/guest', 'method' => 'GET')) }}
+                        {{ Form::open(array('url' => 'account/guest', 'method' => 'POST')) }}
 
                         <a href="#" class="button">Play as guest</a>
 
