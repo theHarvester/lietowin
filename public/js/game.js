@@ -544,7 +544,12 @@ function revealDice(dice){
         lineHTML += '</div> <div class="diceRow">';
         $(this.dice).each(function(){
             if(this[0] != undefined) {
-                lineHTML += drawDie(this[0]).html() + " ";
+                if(this[0] == dice.lastBet.dice_number){
+                    lineHTML += drawDie(this[0]).html() + " ";
+                } else {
+                    lineHTML += drawDie(this[0], false).html() + " ";
+                }
+
             } else {
                 lineHTML += drawDie("skull").html() + " ";
             }
@@ -563,7 +568,9 @@ function revealDice(dice){
 }
 
 
-function drawDie(dieNumber){
+function drawDie(dieNumber, validDie){
+    validDie = (typeof validDie === "undefined") ? true : validDie;
+
     dieNumber = String(dieNumber);
     var die = null;
     switch (dieNumber)
@@ -595,6 +602,10 @@ function drawDie(dieNumber){
             break;
     }
     die.removeAttr('id');
+    if(!validDie){
+        console.log(die.children('.dice').addClass('invalid-die'));
+    }
+
 
     return die;
 }
