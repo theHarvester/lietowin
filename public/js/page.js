@@ -45,10 +45,18 @@ $(document).ready(function(){
         }
     });
     middlePageTriggered = false;
-    pageHeight = $(window).height() + 100;
+    pageHeight = $(window).height() + 50;
+    if(pageHeight < 600){
+        pageHeight = 600;
+    }
+    var middleHeight = $('#body-content .section').height() + 20;
+    if(pageHeight > middleHeight){
+        middleHeight = pageHeight;
+    }
     middlePageStart = pageHeight - 100;
-    middlePageEnd = (pageHeight * 2) - 100;
+    middlePageEnd = (pageHeight + middleHeight) - 100;
     $('.page').css('height', pageHeight);
+    $('#body-content').css('height', middleHeight);
 
     $(function() {
 
