@@ -10,7 +10,7 @@
     <div><h1>Lie to Win</h1></div>
     <div id="currentlyQueued">You are in the queue, please wait while we find you a game.</div>
     <div id="turnFormContainer">
-        <div id="turnForm">
+        <div id="turnForm" class="fadeInLeft">
             <div class="turnForms">
                 <form id="turnFormRaise" action="/apifight/public/api/v1/game/move" type="post">
                     <div class="clear"></div>

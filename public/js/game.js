@@ -390,7 +390,7 @@ function updatePlayersTurn(player){
             $('#turnFormRaise a').removeClass('inactive');
             $('#turnFormLie a').removeClass('inactive');
             $('#turnFormPerfect a').removeClass('inactive');
-            $('#turnForm').show();
+            showTurnForm();
             if(lastBetAmount > 0){
                 $('#raiseDiceAmount').html(drawDie(lastBetAmount + "x"));
                 myBetAmount = lastBetAmount;
@@ -406,7 +406,7 @@ function updatePlayersTurn(player){
                 myBetDice = 1;
             }
             prepareBetArrows();
-            $('#turnForm').show();
+            showTurnForm();
         }
 
     } else {
@@ -415,7 +415,10 @@ function updatePlayersTurn(player){
     }
 }
 
-
+function showTurnForm(){
+    $('#turnForm').show();
+    $('#turnForm').addClass('animated');
+}
 
 function updatePlayerOrder(playerOrder){
 	window.playerOrder = playerOrder;
