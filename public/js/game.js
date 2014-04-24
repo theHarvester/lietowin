@@ -25,6 +25,7 @@ var isNewRound = true;
 
 $(document).ready(function(){
 	$('#turnForm').hide();
+    $('#lastRaiseContainer').hide();
 	$('#turnForm form').submit(function(){
         makeMove(this);
 		return false;
@@ -111,6 +112,7 @@ function animateRoll(){
 
 function makeMove(form){
     $('#turnForm').hide();
+    $('#lastRaiseContainer').hide();
     $('#amount').val(String(myBetAmount));
     $('#dice_number').val(String(myBetDice));
     $.ajax({
@@ -416,6 +418,9 @@ function updatePlayersTurn(player){
 }
 
 function showTurnForm(){
+    $("#lastRaiseContainer").show();
+    $('#lastRaiseContainer').addClass('animated');
+
     $('#turnForm').show();
     $('#turnForm').addClass('animated');
 }
@@ -430,6 +435,12 @@ function updateMoves(moves){
         lastBetElem.empty();
         lastBetElem.append(drawSmallDie(moves[i].amount+'x'));
         lastBetElem.append(drawSmallDie(moves[i].diceFace));
+
+        var lastBetTop = $('#lastRaise');
+        lastBetTop.empty();
+        lastBetTop.append(drawSmallDie(moves[i].amount+'x'));
+        lastBetTop.append(drawSmallDie(moves[i].diceFace));
+        console.log('here');
 
         lastBetDice = moves[i].diceFace;
         lastBetAmount = moves[i].amount;
@@ -454,6 +465,7 @@ function currentlyQueued(isQueued){
     if(isQueued){
         $('#currentlyQueued').show();
         $('#turnForm').hide();
+        $('#lastRaiseContainer').hide();
         $('#myDice').hide();
     } else {
         $('#currentlyQueued').hide();
