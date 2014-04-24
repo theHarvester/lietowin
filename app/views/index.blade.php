@@ -71,27 +71,66 @@
             <div id="loginFormContainer">
                 <div id="loginForm" class="white_content">
                     <div class="exit">X</div>
-                    <div class="content">
+                    <div class="lb-form-container">
+                        <h3>Create guest account</h3>
+
+                        {{ Form::open(array('url' => 'account/guest', 'method' => 'GET')) }}
+
+                        <a href="#" class="button">Play as guest</a>
+
+                        {{ Form::close() }}
+
+                    </div>
+                    <div class="lb-form-container">
                         <h3>Login</h3>
 
                         {{ Form::open(array('url' => 'account/login', 'method' => 'POST')) }}
 
-                        <p>
-                <span class="pure-u-1-4">
-                    {{ Form::label('username', 'Username') }}
-                </span>
 
+                        <div class="lb-label">
+                            {{ Form::label('username', 'Username') }}
+                        </div>
+
+                        <div class="lb-input">
                             {{ Form::text('username', Input::old('username')) }}
+                        </div>
 
-                        </p>
+                        <div class="lb-label">
+                            {{ Form::label('password', 'Password') }}
+                        </div>
 
-                        <p>
-                <span class="pure-u-1-4">
-                    {{ Form::label('password', 'Password') }}
-                </span>
+                        <div class="lb-input">
                             {{ Form::password('password') }}
-                        </p>
+                        </div>
+
                         <a href="#" class="button">Login</a>
+
+                        {{ Form::close() }}
+
+                    </div>
+                    <div class="lb-form-container">
+                        <h3>Signup</h3>
+
+                        {{ Form::open(array('url' => 'account/create', 'method' => 'POST')) }}
+
+
+                        <div class="lb-label">
+                            {{ Form::label('username', 'Username') }}
+                        </div>
+
+                        <div class="lb-input">
+                            {{ Form::text('username', Input::old('username')) }}
+                        </div>
+
+                        <div class="lb-label">
+                            {{ Form::label('password', 'Password') }}
+                        </div>
+
+                        <div class="lb-input">
+                            {{ Form::password('password') }}
+                        </div>
+
+                        <a href="#" class="button">Create account</a>
 
                         {{ Form::close() }}
 
