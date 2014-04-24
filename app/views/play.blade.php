@@ -61,6 +61,8 @@
         <div id="roundResult" class="white_content">
             <div class="exit">X</div>
             <div class="content"></div>
+
+            <a href="#" onclick="closeLightBox()" class="button close-light-box">Close</a>
         </div>
         <div class="black_overlay"></div>
     </div>

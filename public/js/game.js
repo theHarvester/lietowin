@@ -37,9 +37,11 @@ $(document).ready(function(){
     });
 
     $('.white_content .exit').click(function(){
-        $(this).parent('.white_content').hide();
-        $('.black_overlay').hide();
-        animateRoll();
+        closeLightBox();
+    });
+
+    $('.black_overlay').click(function(){
+        closeLightBox();
     });
 
     $('#diceAmt .raiseArrow').click(function(){
@@ -89,6 +91,12 @@ setInterval(function(){
         });
     }
 }, 2000);
+
+function closeLightBox(){
+    $('.white_content').hide();
+    $('.black_overlay').hide();
+    animateRoll();
+}
 
 function animateRoll(){
     $("#myDiceRow .dice").each(function(){
