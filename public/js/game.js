@@ -39,6 +39,7 @@ $(document).ready(function(){
     $('.white_content .exit').click(function(){
         $(this).parent('.white_content').hide();
         $('.black_overlay').hide();
+        animateRoll();
     });
 
     $('#diceAmt .raiseArrow').click(function(){
@@ -89,6 +90,16 @@ setInterval(function(){
     }
 }, 2000);
 
+function animateRoll(){
+    $("#myDiceRow .dice").each(function(){
+        $(this).addClass('bounce');
+        var randInvterval = getRandomInt(1,200) +"ms";
+        $(this).css('animation-delay', randInvterval);
+        $(this).css('-moz-animation-delay', randInvterval);
+        $(this).css('-webkit-animation-delay', randInvterval);
+        $(this).addClass('animated');
+    });
+}
 
 function makeMove(form){
     $('#turnForm').hide();
@@ -631,4 +642,8 @@ function isEmpty(obj) {
     }
 
     return true;
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }

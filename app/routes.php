@@ -61,7 +61,7 @@ Route::post('account/guest', array('as' => 'login', function () {
     } else {
         //todo: log an error
         return Redirect::route('home')
-            ->with('flash_notice', 'Something went wrong');
+            ->with('flash_notice', 'Something went wrong, the authorities have been notified. Is that a red dot on your shirt?');
     }
 }));
 
