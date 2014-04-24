@@ -28,7 +28,7 @@ $(document).ready(function(){
     $(window).scroll(function(){
         if(!flipped && checkVisible(flipItem)){
             flipped = true;
-            $('.flipMe').addClass('animated flipInY');
+            $('.flipMe').addClass('animated fadeInRight');
         }
         if($(window).scrollTop() > middlePageStart && $(window).scrollTop() < middlePageEnd){
             if(!middlePageTriggered){
