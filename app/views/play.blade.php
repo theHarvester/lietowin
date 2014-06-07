@@ -53,7 +53,7 @@
     <div class="clear"></div>
 
     <div id="myDice">
-        <div id="myDiceName" class="username">You</div>
+        <div id="myDiceName" class="username">Your hand</div>
         <div id="myDiceRow"></div>
     </div>
     <div class="clear"></div>

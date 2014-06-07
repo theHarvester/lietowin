@@ -111,7 +111,7 @@
                     <div class="lb-form-container">
                         <h3>Signup</h3>
 
-                        {{ Form::open(array('url' => 'account/create', 'method' => 'POST')) }}
+                        {{ Form::open(array('url' => 'account/register', 'method' => 'POST')) }}
 
 
                         <div class="lb-label">
