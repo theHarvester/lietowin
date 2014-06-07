@@ -193,6 +193,14 @@
         <div class="content-container">
             <div class="section">
                 <div class="section-header">About</div>
+                <div class="section-1-1">
+                    <p>
+                        Lie to win is an online multiplayer game based on Liars dice as seen in <a href="http://reddead.wikia.com/wiki/Liar's_Dice">Red Dead Redemption</a> and <a href="https://www.youtube.com/watch?v=WEmJQSO1tC4">Pirates of the Caribbean</a>. The game started out as an experiment to explore how multiplayer games could be created using only web technology. If you’d like to contact me, you can leave me a message through my <a href="http://harvey.codes">personal site</a>. If you’d like to view the source code it’s <a href="https://github.com/theHarvester/lietowin">available here</a>.
+                    </p>
+                    <p></p>
+
+                </div>
+
             </div>
         </div>
     </div>
