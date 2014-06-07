@@ -88,7 +88,7 @@
 
 
                         <div class="lb-label">
-                            {{ Form::label('username', 'Username') }}
+                            {{ Form::label('username', 'Display name or Email') }}
                         </div>
 
                         <div class="lb-input">
@@ -113,13 +113,20 @@
 
                         {{ Form::open(array('url' => 'account/register', 'method' => 'POST')) }}
 
-
                         <div class="lb-label">
-                            {{ Form::label('username', 'Username') }}
+                            {{ Form::label('username', 'Display name') }}
                         </div>
 
                         <div class="lb-input">
                             {{ Form::text('username', Input::old('username')) }}
+                        </div>
+
+                        <div class="lb-label">
+                            {{ Form::label('email', 'Email (not required)') }}
+                        </div>
+
+                        <div class="lb-input">
+                            {{ Form::text('email', Input::old('email')) }}
                         </div>
 
                         <div class="lb-label">

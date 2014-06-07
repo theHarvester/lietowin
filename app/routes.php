@@ -67,11 +67,25 @@ Route::post('account/guest', array('as' => 'guest_login', function () {
 
 Route::post('account/register', array('as' => 'register', function () {
     $username = Input::get('username');
+    $email = Input::get('email');
     $password = Input::get('password');
 
-    if(!preg_match('/^[a-zA-Z0-9-_]+$/', $username) || preg_match('/^Guest[0-9]*$/', $username)){
+    if(!preg_match('/^[a-zA-Z0-9-_]+$/', $username) || preg_match('/^Guest[0-9]*$/', $username) || strlen($username) > 60){
         return Redirect::route('home')
             ->with('flash_notice', 'Invalid username format. Username\'s can only contain letters, numbers, underscores and dashes.');
+    }
+
+    if(!empty($email)){
+        $emailValidator = Validator::make(
+            array('email' => $email),
+            array('email' => 'email|unique:users')
+        );
+        if($emailValidator->fails()){
+            return Redirect::route('home')
+                ->with('flash_notice', 'The email address provided has an incorrect format or is registered with another user.');
+        }
+    } else {
+        $email = null;
     }
 
     $usernameTaken = User::where('username', '=', $username)->first();
@@ -87,6 +101,7 @@ Route::post('account/register', array('as' => 'register', function () {
 
     User::create(array(
         'username' => $username,
+        'email' => $email,
         'password' => Hash::make($password)
     ));
 
@@ -100,18 +115,29 @@ Route::post('account/register', array('as' => 'register', function () {
 }));
 
 Route::post('account/login', function () {
-    $user = array(
-        'username' => Input::get('username'),
-        'password' => Input::get('password')
-    );
+    $username = Input::get('username');
+    $password = Input::get('password');
+
+    // check if it's a username or email attempt
+    if(preg_match('/^[a-zA-Z0-9-_]+$/', $username)){
+        $user = array(
+            'username' => $username,
+            'password' => $password
+        );
+    } else {
+        $user = array(
+            'email' => $username,
+            'password' => $password
+        );
+    }
 
     if (Auth::attempt($user)) {
-        return Redirect::route('home')
+        return Redirect::route('play')
             ->with('flash_notice', 'You are successfully logged in.');
     }
 
     // authentication failure! lets go back to the login page
-    return Redirect::route('login')
+    return Redirect::route('home')
         ->with('flash_error', 'Your username/password combination was incorrect.')
         ->withInput();
 });
