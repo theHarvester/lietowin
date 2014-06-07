@@ -2,48 +2,13 @@
  *  Global styles and mixins
  */
 
-//// r: 100, g: 87, b: 0
-//@theme_yellow_base: rgb(255, 236, 115);
-//@theme_yellow_opposite: rgb(71, 43, 131);
-//
-//@theme_blue_base: rgb(255, 104, 64);
-////@theme_blue_opposite: rgb(255, 163, 64);
-//@theme_blue_opposite: rgb(8, 111, 161);
-//
-////@theme_green_base: rgb(54, 215, 146);
-////@theme_green_opposite: rgb(255, 118, 64);
+@theme_base: rgb(255, 118, 64);
+@theme_base_light: lighten(@theme_base,5);
+@theme_base_dark: darken(@theme_base,5);
 
-@theme_green_opposite: rgb(255, 118, 64);
-@theme_green_opposite_light: lighten(@theme_green_opposite,5);
-@theme_green_opposite_dark: darken(@theme_green_opposite,5);
-
-@theme_green_base: darken(spin(@theme_green_opposite,180),0);
-@theme_green_base_light: lighten(@theme_green_base, 10);
-@theme_green_base_dark: darken(@theme_green_base, 10);
-
-//@theme_blue_opposite
-
-//@theme_1_primary_base: #5DB784;
-//@theme_1_primary_opposite: #E7B376;
-//@theme_1_secondary_base: #5B90AA;
-//@theme_1_secondary_opposite: #E78D76;
-
-
-
-
-//blue theme
-@base: rgb(70, 113, 213);
-@darker: rgb(18, 64, 171);
-
-
-//green ones
-//@base: rgb(0, 160, 138);
-//@darker: rgb(0, 104, 90);
-
-
-@dark: lighten(@darker, 2);
-@light: lighten(@base, 3);
-@lighter: lighten(@base, 6);
+@theme_contrast: darken(spin(@theme_base,180),0);
+@theme_contrast_light: lighten(@theme_contrast, 10);
+@theme_contrast_dark: darken(@theme_contrast, 10);
 
 @grey: #424242;
 @gray_light: lighten(@grey, 3);
@@ -98,7 +63,7 @@ body {
 }
 
 .button {
-  background-color: @theme_green_base;
+  background-color: @theme_contrast;
   text-indent: 0;
   display: inline-block;
   color: #ffffff;
@@ -113,7 +78,7 @@ body {
 }
 
 .button:hover {
-  background-color: @theme_green_base_light;
+  background-color: @theme_contrast_light;
 }
 
 .button:active {
@@ -122,12 +87,12 @@ body {
 }
 
 .button.inverse {
-  background-color: @theme_green_opposite;
+  background-color: @theme_base;
   .transition_me()
 }
 
 .button.normal {
-  background-color: @theme_green_base;
+  background-color: @theme_contrast;
   .transition_me()
 
 }
@@ -157,7 +122,7 @@ body {
   /* left must factor in padding/2 as well */
   left: -358px;
   padding: 16px;
-  background-color: @theme_green_opposite;
+  background-color: @theme_base;
   z-index:1002;
   overflow: auto;
 }
