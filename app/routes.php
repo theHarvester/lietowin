@@ -42,7 +42,11 @@ Route::get('account/login', array('as' => 'login', function () {
 
 Route::post('account/guest', array('as' => 'guest_login', function () {
     $lastGuest = User::whereRaw('username REGEXP \'^Guest[0-9]*$\'')->orderBy('created_at','desc')->take(1)->first();
-    $tmpNum = 1 + intval(str_replace("Guest", "", $lastGuest->username));
+    if(isset($lastGuest)) {
+        $tmpNum = 1 + intval(str_replace("Guest", "", $lastGuest->username));
+    } else {
+        $tmpNum = 1;
+    }
     $tmpUser = 'Guest'.$tmpNum;
     $tmpPass = rand(1,10000000);
 
