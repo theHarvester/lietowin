@@ -8,70 +8,79 @@
 </script>
 <div id="body-container">
     <div><h1>Lie to Win</h1></div>
-    <div id="currentlyQueued">You are in the queue, please wait while we find you a game.</div>
-    <div id="lastRaiseContainer" class="fadeInLeft">
-        <div id="lastRaiseLabel">Last raise</div>
-        <div id="lastRaise"></div>
-    </div>
-    <div class="clear"></div>
-    <div id="turnFormContainer">
-        <div id="turnForm" class="fadeInLeft">
-            <div class="turnForms">
-                <form id="turnFormRaise" action="/apifight/public/api/v1/game/move" type="post">
-                    <div class="clear"></div>
-                    <input id="dice_number" type="hidden" name="dice_number">
-                    <input id="amount" type="hidden" name="amount">
-                    <input id="raise" type="hidden" name="call" value="raise" checked="checked">
-                    <a href="#" class="button">Raise</a>
-                </form>
-
-                <form id="turnFormLie" action="/apifight/public/api/v1/game/move" type="post">
-                    <input type="hidden" name="call" value="lie">
-                    <a href="#" class="button">Lie</a>
-                </form>
-
-                <form id="turnFormPerfect" action="/apifight/public/api/v1/game/move" type="post">
-                    <input type="hidden" name="call" value="perfect">
-                    <a href="#" class="button">Spot on</a>
-                </form>
-            </div>
-            <div class="diceRaiseRow">
-                <div id="diceAmt" class="diceColumn">
-                    <div class="arrowBase arrowUp raiseArrow">&nbsp;</div>
-                    <div id="raiseDiceAmount" class="diceReserve"></div>
-                    <div class="arrowBase arrowDown lowerArrow">&nbsp;</div>
-                </div>
-                <div id="diceNum" class="diceColumn">
-                    <div class="arrowBase arrowUp raiseArrow">&nbsp;</div>
-                    <div id="raiseDiceNumber" class="diceReserve"></div>
-                    <div class="arrowBase arrowDown lowerArrow">&nbsp;</div>
-                </div>
-            </div>
-
+    <div id="game">
+        <div id="currentlyQueued">You are in the queue, please wait while we find you a game.</div>
+        <div id="lastRaiseContainer" class="fadeInLeft">
+            <div id="lastRaiseLabel">Last raise</div>
+            <div id="lastRaise"></div>
         </div>
-    </div>
-    <div class="clear"></div>
+        <div class="clear"></div>
+        <div id="turnFormContainer">
+            <div id="turnForm" class="fadeInLeft">
+                <div class="turnForms">
+                    <form id="turnFormRaise" action="/apifight/public/api/v1/game/move" type="post">
+                        <div class="clear"></div>
+                        <input id="dice_number" type="hidden" name="dice_number">
+                        <input id="amount" type="hidden" name="amount">
+                        <input id="raise" type="hidden" name="call" value="raise" checked="checked">
+                        <a href="#" class="button">Raise</a>
+                    </form>
 
-    <div id="myDice">
-        <div id="myDiceName" class="username">Your hand</div>
-        <div id="myDiceRow"></div>
-    </div>
-    <div class="clear"></div>
+                    <form id="turnFormLie" action="/apifight/public/api/v1/game/move" type="post">
+                        <input type="hidden" name="call" value="lie">
+                        <a href="#" class="button">Lie</a>
+                    </form>
 
-    <div id="diceAvailable"></div>
-    <div class="clear"></div>
+                    <form id="turnFormPerfect" action="/apifight/public/api/v1/game/move" type="post">
+                        <input type="hidden" name="call" value="perfect">
+                        <a href="#" class="button">Spot on</a>
+                    </form>
+                </div>
+                <div class="diceRaiseRow">
+                    <div id="diceAmt" class="diceColumn">
+                        <div class="arrowBase arrowUp raiseArrow">&nbsp;</div>
+                        <div id="raiseDiceAmount" class="diceReserve"></div>
+                        <div class="arrowBase arrowDown lowerArrow">&nbsp;</div>
+                    </div>
+                    <div id="diceNum" class="diceColumn">
+                        <div class="arrowBase arrowUp raiseArrow">&nbsp;</div>
+                        <div id="raiseDiceNumber" class="diceReserve"></div>
+                        <div class="arrowBase arrowDown lowerArrow">&nbsp;</div>
+                    </div>
+                </div>
 
-    <div id="moveHistory"></div>
-    <div id="roundResultContainer">
-        <div id="roundResult" class="white_content">
-            <div class="exit">X</div>
-            <div class="content"></div>
-
-            <a href="#" onclick="closeLightBox()" class="button close-light-box">Close</a>
+            </div>
         </div>
-        <div class="black_overlay"></div>
+        <div class="clear"></div>
+
+        <div id="myDice">
+            <div id="myDiceName" class="username">Your hand</div>
+            <div id="myDiceRow"></div>
+        </div>
+        <div class="clear"></div>
+
+        <div id="diceAvailable"></div>
+        <div class="clear"></div>
+
+        <div id="moveHistory"></div>
+        <div id="roundResultContainer">
+            <div id="roundResult" class="white_content">
+                <div class="exit">X</div>
+                <div class="content"></div>
+
+                <a href="#" onclick="closeLightBox()" class="button close-light-box">Close</a>
+            </div>
+            <div class="black_overlay"></div>
+        </div>
+        <div id="output"></div>
     </div>
-    <div id="output"></div>
+    <div id="winnerContainer">
+        <div class="section-1-1">
+            <h2 id="gameOver">Game Over</h2>
+            <div id="winnerAnnouncement"></div>
+        </div>
+        {{ link_to_route('play', 'Play again', array(), array('class' => 'button')) }}
+    </div>
 </div>
 
 <div id="diceSvg">

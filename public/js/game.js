@@ -17,6 +17,7 @@ var totalDiceInPlay = 100;
 var lastGameState = {};
 var deadPlayers = Array();
 var playerDead = false;
+var gameEnded = false;
 
 // ensures the round over animation is only done once
 var toggleRoundOver = false;
@@ -126,68 +127,79 @@ function makeMove(form){
 }
 
 function updateGame(gameState){
-    if(gameState.losers !== 'undefinded'){
+    if(gameState.losers !== 'undefined'){
         if(gameState.losers !== lastGameState.losers){
             lastGameState.losers = gameState.losers;
         }
     }
 
-    if(gameState.round !== 'undefinded'){
+    if(gameState.round !== 'undefined'){
         if(gameState.round !== lastGameState.round){
             updateRound(gameState.round);
             lastGameState.round = gameState.round;
         }
     }
 
-	if(gameState.playerOrder !== 'undefinded'){
+	if(gameState.playerOrder !== 'undefined'){
         if(gameState.playerOrder !== lastGameState.playerOrder){
             updatePlayerOrder(gameState.playerOrder);
             lastGameState.playerOrder = gameState.playerOrder;
         }
 	}
 
-	if(gameState.diceAvailable !== 'undefinded'){
+	if(gameState.diceAvailable !== 'undefined'){
         if(gameState.diceAvailable !== lastGameState.diceAvailable){
             updateDiceAvailable(gameState.diceAvailable);
             lastGameState.diceAvailable = gameState.diceAvailable;
         }
 	}
 
-    if(gameState.moves !== 'undefinded'){
+    if(gameState.moves !== 'undefined'){
         if(JSON.stringify(gameState.moves) !== JSON.stringify(lastGameState.moves)){
             updateMoves(gameState.moves);
             lastGameState.moves = gameState.moves;
         }
     }
 
-	if(gameState.playersTurn !== 'undefinded'){
+	if(gameState.playersTurn !== 'undefined'){
         if(gameState.playersTurn !== lastGameState.playersTurn){
             updatePlayersTurn(gameState.playersTurn);
             lastGameState.playersTurn = gameState.playersTurn;
         }
 	}
 
-    if(gameState.myDice !== 'undefinded'){
+    if(gameState.myDice !== 'undefined'){
         if(gameState.myDice !== lastGameState.myDice){
             updateMyDice(gameState.myDice);
             lastGameState.myDice = gameState.myDice;
         }
     }
 
-    if(gameState.lastRoundEnd !== 'undefinded'){
+    if(typeof gameState.lastRoundEnd !== 'undefined'){
         roundEnd(gameState.lastRoundEnd);
-
     }
 
-    if(gameState.winnerId !== 'undefinded'){
-        roundEnd(gameState.winnerId);
-
+    if(typeof(gameState.winner) !== "undefined"){
+        if(!gameEnded) {
+            gameOver(gameState.winner);
+        }
+        gameEnded = true;
     }
     isNewRound = false;
 }
 
 function gameOver(winner) {
-    alert(winner);
+    $('#game').css('display', 'none');
+    $('#winnerContainer').css('display', 'block');
+    if(username == winner){
+        $('#gameOver').text('You win!');
+        $('#winnerAnnouncement').text('Congratulations buddy, I always knew you had it in you');
+    } else {
+        $('#gameOver').text('You lose!');
+        $('#winnerAnnouncement').text(winner + ' won the game. I think they insulted your mother, are you gonna\' take that?');
+    }
+
+
 }
 
 function changeBet(diff){
@@ -440,7 +452,6 @@ function updateMoves(moves){
         lastBetTop.empty();
         lastBetTop.append(drawSmallDie(moves[i].amount+'x'));
         lastBetTop.append(drawSmallDie(moves[i].diceFace));
-        console.log('here');
 
         lastBetDice = moves[i].diceFace;
         lastBetAmount = moves[i].amount;
@@ -615,7 +626,7 @@ function drawDie(dieNumber, validDie){
     }
     die.removeAttr('id');
     if(!validDie){
-        console.log(die.children('.dice').addClass('invalid-die'));
+        die.children('.dice').addClass('invalid-die');
     }
 
 

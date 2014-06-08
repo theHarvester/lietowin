@@ -1,12 +1,12 @@
 @import "style.less";
 
-body{
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
   background: @theme_contrast;
 }
@@ -39,39 +39,41 @@ body{
   display: none;
 }
 
-.diceRaiseRow{
-    height: 220px;
-    margin-bottom: 0;
-    width: 250px;
-    float: left;
+.diceRaiseRow {
+  height: 220px;
+  margin-bottom: 0;
+  width: 250px;
+  float: left;
 }
 
 .turnForms {
-    width: 350px;
-    float: left;
+  width: 350px;
+  float: left;
 }
 
 .revealUsername {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 #revealHeading {
-    font-size: 20pt;
-    text-align: center;
+  font-size: 20pt;
+  text-align: center;
 }
-
 
 #output {
 }
+
 #myDice {
-    height: 120px;
+  height: 120px;
 }
+
 #diceAvailable {
-    height: 120px;
+  height: 120px;
 }
+
 .opponentsDice {
-    float: left;
-    width: 660px;
+  float: left;
+  width: 660px;
 }
 
 #myDiceRow {
@@ -80,60 +82,78 @@ body{
 }
 
 .username {
-    clear: both;
-    font-size: 16pt;
+  clear: both;
+  font-size: 16pt;
 }
+
 #moveHistory {
 
 }
+
 #currentlyQueued {
   background: no-repeat url("../img/game-loader.gif");
   padding: 3px 0px 0px 30px;
 }
+
 #myDice {
   display: none;
 }
+
 #roundResult {
-    /*width: 700px;*/
+  /*width: 700px;*/
 }
+
 #turnFormContainer {
-    display: block;
-    margin-bottom: 20px;
+  display: block;
+  margin-bottom: 20px;
+}
+
+#winnerContainer {
+  display: none;
+}
+
+.section-1-1 {
+  float: left;
+  width:100%;
+  background-color: @theme_base;
+  padding: 0px 20px 20px 20px;
+  margin-bottom: 20px;
 }
 
 html {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
+
 body {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .dice {
-    background: white;
-    width: 90px;
-    height: 90px;
-    border-radius: 10px;
-    margin: 20px;
-    padding: 0px;
-    line-height: 90px;
-    text-align: center;
-    color: #353535;
-    font-size: 50px;
+  background: white;
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 0px;
+  line-height: 90px;
+  text-align: center;
+  color: #353535;
+  font-size: 50px;
 }
 
 .diceSmall {
-    background: white;
-    width: 50px;
-    height: 50px;
-    border-radius: 5px;
-    margin: 20px;
-    padding: 0px;
-    line-height: 50px;
-    text-align: center;
-    color: #353535;
-    font-size: 30px;
+  background: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  margin: 20px;
+  padding: 0px;
+  line-height: 50px;
+  text-align: center;
+  color: #353535;
+  font-size: 30px;
 }
 
 .invalid-die {
@@ -141,36 +161,36 @@ body {
 }
 
 .float {
-    float: left;
+  float: left;
 }
 
 svg.drawing {
-    margin: 5px;
+  margin: 5px;
 }
 
 #diceSvg {
-    display: none;
+  display: none;
 }
 
-#body-container{
-  width:700px;
+#body-container {
+  width: 700px;
   margin: auto;
 }
 
 @media all and (max-width: 900px) {
-    #body-container{
-        width:100%;
-    }
+  #body-container {
+    width: 100%;
+  }
 }
 
 .arrowUp {
-    border-bottom: 45px solid @theme_base;
-    margin-left: 20px;
+  border-bottom: 45px solid @theme_base;
+  margin-left: 20px;
 }
 
 .arrowDown {
-    border-top: 45px solid @theme_base;
-    margin-left: 20px;
+  border-top: 45px solid @theme_base;
+  margin-left: 20px;
 }
 
 .arrowUp:hover {
@@ -190,34 +210,36 @@ svg.drawing {
 }
 
 .arrowBase {
-    width: 0;
-    height: 0;
-    border-left: 45px solid transparent;
-    border-right: 45px solid transparent;
-    cursor: pointer;
+  width: 0;
+  height: 0;
+  border-left: 45px solid transparent;
+  border-right: 45px solid transparent;
+  cursor: pointer;
 
 }
 
 .diceReserve {
-    width: 120px;
-    height: 130px;
+  width: 120px;
+  height: 130px;
 }
 
 .diceColumn {
-    width: 120px;
-    float: left;
+  width: 120px;
+  float: left;
 }
 
 .inactive {
-    background-color: #D1D1D1;
+  background-color: #D1D1D1;
 
 }
+
 .inactive:hover {
-     background-color:#D1D1D1;
-    cursor: default;
+  background-color: #D1D1D1;
+  cursor: default;
 }
+
 .inactive:active {
-    background-color:#D1D1D1;
+  background-color: #D1D1D1;
 }
 
 .playersTurn {

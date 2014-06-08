@@ -136,9 +136,11 @@ class GameController extends BaseController
                     $losers[] = $loser->username;
                 }
 
+                $winner = User::find($game->winner_id);
+
                 return Response::json(array(
                         'error' => false,
-                        'winnerId' => $game->winner_id,
+                        'winner' => $winner->username,
                         'losers' => $losers
                     ),
                     200
