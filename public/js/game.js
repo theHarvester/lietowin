@@ -217,7 +217,14 @@ function gameOver(winner) {
 }
 
 function updateTimeLeft(roundTimeLeft){
-    $('#timeLeft').text(roundTimeLeft);
+    console.log(roundTimeLeft);
+    var divisor_for_minutes = roundTimeLeft % (60 * 60);
+    var minutes = Math.floor(divisor_for_minutes / 60);
+
+    var divisor_for_seconds = divisor_for_minutes % 60;
+    var seconds = Math.ceil(divisor_for_seconds);
+
+    $('#timeLeft').text(minutes +':' + seconds);
 }
 
 function changeBet(diff){
@@ -412,6 +419,7 @@ function updatePlayersTurn(player){
     }
 
     if(currentPayersTurn == username){
+        $('#timeLeftPlayerName').text('your');
         $('#myDiceRow').addClass('playersTurn');
         if(userInControl){
             $('#raiseDiceAmount').html(drawDie(myBetAmount + "x"));
@@ -442,6 +450,7 @@ function updatePlayersTurn(player){
         }
 
     } else {
+        $('#timeLeftPlayerName').text(player + '\'s');
         $('#myDiceRow').removeClass('playersTurn');
         $('#turnForm').hide();
     }
@@ -534,23 +543,27 @@ function roundEnd(lastRound){
                 }, dataType: "json"
             });
 
-            if(lastRound.player == lastRound.loser){
-                var roundLoser = lastRound.loser;
-                if(roundLoser == username){
-                    roundLoser = 'You';
-                }
-
-                $('#roundResult .content').html('<div id="revealHeading">' + roundLoser + ' called ' + lastRound.call + ' and lost</div>');
+            if(lastRound.call == 'timeout'){
+                $('#roundResult .content').html('<div id="revealHeading">' + lastRound.loser + ' took to long to make a move</div>');
             } else {
-                var roundLoser = lastRound.loser;
-                if(roundLoser == username){
-                    roundLoser = 'you';
+                if (lastRound.player == lastRound.loser) {
+                    var roundLoser = lastRound.loser;
+                    if (roundLoser == username) {
+                        roundLoser = 'You';
+                    }
+
+                    $('#roundResult .content').html('<div id="revealHeading">' + roundLoser + ' called ' + lastRound.call + ' and lost</div>');
+                } else {
+                    var roundLoser = lastRound.loser;
+                    if (roundLoser == username) {
+                        roundLoser = 'you';
+                    }
+                    var roundWinner = lastRound.player;
+                    if (roundWinner == username) {
+                        roundWinner = 'You';
+                    }
+                    $('#roundResult .content').html('<div id="revealHeading">' + roundWinner + ' called ' + lastRound.call + ' on ' + roundLoser + ' and won</div>');
                 }
-                var roundWinner = lastRound.player;
-                if(roundWinner == username){
-                    roundWinner = 'You';
-                }
-                $('#roundResult .content').html('<div id="revealHeading">' + roundWinner + ' called ' + lastRound.call + ' on ' + roundLoser + ' and won</div>');
             }
 
             $('#turnFormRaise a').removeClass('inactive');
