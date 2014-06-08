@@ -18,6 +18,7 @@ var lastGameState = {};
 var deadPlayers = Array();
 var playerDead = false;
 var gameEnded = false;
+var timeLeft = 120;
 
 // ensures the round over animation is only done once
 var toggleRoundOver = false;
@@ -93,6 +94,13 @@ setInterval(function(){
         });
     }
 }, 2000);
+
+setInterval(function(){
+    if(timeLeft > 0){
+        --timeLeft;
+    }
+    updateTimeLeft(timeLeft);
+}, 1000);
 
 function closeLightBox(){
     $('.white_content').hide();
@@ -175,8 +183,16 @@ function updateGame(gameState){
         }
     }
 
-    if(typeof gameState.lastRoundEnd !== 'undefined'){
+    if(gameState.lastRoundEnd !== 'undefined'){
         roundEnd(gameState.lastRoundEnd);
+    }
+
+    if(gameState.secondsElapsed !== 'undefined'){
+        $('#timeLeftContainer').show();
+        var newTimeLeft = 120 - gameState.secondsElapsed;
+        if(newTimeLeft != timeLeft) {
+            timeLeft = newTimeLeft;
+        }
     }
 
     if(typeof(gameState.winner) !== "undefined"){
@@ -198,8 +214,10 @@ function gameOver(winner) {
         $('#gameOver').text('You lose!');
         $('#winnerAnnouncement').text(winner + ' won the game. I think they insulted your mother, are you gonna\' take that?');
     }
+}
 
-
+function updateTimeLeft(roundTimeLeft){
+    $('#timeLeft').text(roundTimeLeft);
 }
 
 function changeBet(diff){

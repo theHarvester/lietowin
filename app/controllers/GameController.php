@@ -12,6 +12,7 @@ class GameController extends BaseController
     {
         $gameId = Session::get('game_id');
         $userId = Auth::user()->id;
+        $timeoutLimit = 120;
 
         if ($gameId != null) {
             $game = Game::find($gameId);
@@ -42,7 +43,8 @@ class GameController extends BaseController
                     DB::raw('moves.call as `move_call`'),
                     DB::raw('moves.dice_number as `move_dice_num`'),
                     DB::raw('moves.amount as `move_amount`'),
-                    DB::raw('users.username as `username`'),
+                    DB::raw('moves.created_at as `move_ts`'),
+                    DB::raw('users.username as `username`')
                 );
 
                 // get all moves
@@ -54,15 +56,27 @@ class GameController extends BaseController
 
                 if (count($moves)) {
                     foreach ($moves as $move) {
+                        $secondsSince = time() - strtotime($move->move_ts);
                         $displayMoves[$move->move_id] = array(
                             'call' => $move->move_call,
                             'username' => $move->username,
                             'diceFace' => $move->move_dice_num,
-                            'amount' => $move->move_amount
+                            'amount' => $move->move_amount,
+                            'seconds_since' => $secondsSince
                         );
                     }
                 } else {
                     // this is a brand new round
+                    $lastMove = Moves::where('round', '=', $game->current_round - 1)
+                        ->where('game_id', $gameId)
+                        ->orderBy('created_at', 'DESC')
+                        ->first();
+
+                    if(isset($lastMove)){
+                        $secondsSince = time() - strtotime((string)$lastMove->created_at);
+                    } else {
+                        $secondsSince = time() - strtotime((string)$game->created_at);
+                    }
                 }
 
                 // get current dice face
@@ -90,7 +104,7 @@ class GameController extends BaseController
                     $lastRoundEndObj = Moves::where('game_id', $gameId)
                         ->join('users', 'users.id', '=', 'moves.user_id')
                         ->where('round', $game->current_round - 1)
-                        ->whereIn('call', array('perfect', 'lie'))
+                        ->whereIn('call', array('perfect', 'lie', 'timeout'))
                         ->first()
                         ->toArray();
 
@@ -100,6 +114,20 @@ class GameController extends BaseController
                     $lastRoundEnd['amount'] = $lastRoundEndObj['amount'];
                     $lastRoundEnd['round'] = $lastRoundEndObj['round'];
                     $lastRoundEnd['loser'] = User::find($lastRoundEndObj['loser_id'])->toArray()['username'];
+                }
+
+                // detect player timeout
+                if(isset($secondsSince) && $secondsSince > $timeoutLimit) {
+                    $move = new Moves;
+                    $move->game_id = $gameId;
+                    $move->user_id = $game->user_turn;
+                    $move->call = 'timeout';
+                    $move->amount = 0;
+                    $move->dice_number = 0;
+                    $move->loser_id = $game->user_turn;
+                    $move->round = $game->current_round;
+                    $move->save();
+                    $this->endRound($gameId, $game->user_turn, $diceAvailable);
                 }
 
                 $lostPlayers = GamePlayer::where('game_id', '=', $gameId)
@@ -113,6 +141,7 @@ class GameController extends BaseController
 
                 return Response::json(array(
                         'error' => false,
+                        'secondsElapsed' => $secondsSince,
                         'myDice' => $myDiceFace,
                         'diceAvailable' => $diceAvailableArr,
                         'playersTurn' => $playersTurn,
@@ -315,7 +344,6 @@ class GameController extends BaseController
                             $myMove->dice_number = $diceNum;
                             $myMove->amount = $amount;
                             $myMove->round = $game['current_round'];
-                            $myMove->move_guid = hash('ripemd160', uniqid());
                             $myMove->save();
 
                             $gameObj->user_turn = $nextPlayerId;
@@ -373,7 +401,6 @@ class GameController extends BaseController
                         $move->round = $game['current_round'];
                         $move->amount = $lastRaise['amount'];
                         $move->dice_number = $lastRaise['dice_number'];
-                        $move->move_guid = hash('ripemd160', uniqid());
                         $move->loser_id = $playerLostId;
                         $move->save();
 

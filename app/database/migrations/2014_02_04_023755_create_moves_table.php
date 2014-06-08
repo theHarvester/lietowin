@@ -16,11 +16,10 @@ class CreateMovesTable extends Migration {
 			$table->increments('id');
 			$table->integer('game_id');
 			$table->integer('user_id');
-			$table->enum('call',  array('lie', 'perfect', 'raise'));
+			$table->enum('call',  array('lie', 'perfect', 'raise', 'timeout'));
 			$table->integer('amount');
 			$table->integer('dice_number');
             $table->integer('loser_id')->nullable();
-            $table->string('move_guid');
             $table->integer('round');
 			$table->timestamps();
 		});
