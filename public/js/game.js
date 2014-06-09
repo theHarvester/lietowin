@@ -80,10 +80,10 @@ setInterval(function(){
             url: queueUrl,
             success: function(data){
                 if(data.queued == true){
-                    currentlyQueued(true);
+                    currentlyQueued(true, data.queued_count);
                 } else if(data.game_id !== 'undefinded'){
                     gameId = data.game_id;
-                    currentlyQueued(false);
+                    currentlyQueued(false, 0);
                     $.ajax({
                         url: gameUrl,
                         success: function(game){
@@ -515,9 +515,10 @@ function updateMyDice(dice){
     }
 }
 
-function currentlyQueued(isQueued){
+function currentlyQueued(isQueued, queueCount){
     if(isQueued){
         $('#currentlyQueued').show();
+        $('#queueCount').text(queueCount + ' players currently queued.');
         $('#turnForm').hide();
         $('#lastRaiseContainer').hide();
         $('#myDice').hide();

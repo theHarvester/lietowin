@@ -7,6 +7,9 @@ class QueueingController extends BaseController {
 		$userId = Auth::user()->id;
 		// $userId = 2;
 
+        $queuedPlayers = Queueing::where('queued', true)
+            ->get();
+
 		//Check if in queue
 		$queueing = Queueing::where('user_id', $userId)
 			->where('queued', true)
@@ -14,6 +17,7 @@ class QueueingController extends BaseController {
 		if(!empty($queueing)){
 			return Response::json(array(
 			        'error' => false,
+                    'queued_count' => count($queuedPlayers),
 			        'queued' => true),
 			        200
 			    );
@@ -52,9 +56,23 @@ class QueueingController extends BaseController {
 	 
 	    return Response::json(array(
 	        'error' => false,
-	        'queued' => true),
+            'queued_count' => count($queuedPlayers),
+	        'queued' => true
+            ),
 	        200
 	    );
 	    
 	}
+
+    public function count()
+    {
+        $queuedPlayers = Queueing::where('queued', true)
+            ->get();
+
+        return Response::json(array(
+                'queued_count' => count($queuedPlayers)
+            ),
+            200
+        );
+    }
 }

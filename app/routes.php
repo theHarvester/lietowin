@@ -27,6 +27,7 @@ Route::get('play', array('as' => 'play', 'before' => 'auth.basic', function()
 Route::group(array('prefix' => 'api/v1', 'before' => 'auth.basic'), function()
 {
     Route::get('queue', 'QueueingController@index');
+    Route::get('queue/count', 'QueueingController@count');
     Route::get('game', 'GameController@index');
     Route::post('game/move', 'GameController@move');
     Route::get('game/dice', 'GameController@previousRound');
