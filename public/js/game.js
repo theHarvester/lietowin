@@ -19,6 +19,8 @@ var deadPlayers = Array();
 var playerDead = false;
 var gameEnded = false;
 var timeLeft = 120;
+var divisor_for_minutes = 0;
+var divisor_for_seconds = 0;
 
 // ensures the round over animation is only done once
 var toggleRoundOver = false;
@@ -217,14 +219,19 @@ function gameOver(winner) {
 }
 
 function updateTimeLeft(roundTimeLeft){
-    console.log(roundTimeLeft);
-    var divisor_for_minutes = roundTimeLeft % (60 * 60);
+    divisor_for_minutes = roundTimeLeft % (60 * 60);
     var minutes = Math.floor(divisor_for_minutes / 60);
 
-    var divisor_for_seconds = divisor_for_minutes % 60;
+    divisor_for_seconds = divisor_for_minutes % 60;
     var seconds = Math.ceil(divisor_for_seconds);
 
-    $('#timeLeft').text(minutes +':' + seconds);
+    $('#timeLeft').text(minutes +':' + pad(seconds, 2));
+}
+
+function pad(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
 }
 
 function changeBet(diff){
@@ -458,6 +465,7 @@ function updatePlayersTurn(player){
 
 function showTurnForm(){
     $("#lastRaiseContainer").show();
+    $('#lastRaiseLabel').show();
     $('#lastRaiseContainer').addClass('animated');
 
     $('#turnForm').show();
@@ -520,6 +528,7 @@ function updateRound(round){
 }
 
 function roundEnd(lastRound){
+
     if(currentRound > 1 && toggleRoundOver){
         if(currentRound - 2 >= lastCelebratedRound){
             //the round is definitely over
@@ -569,6 +578,10 @@ function roundEnd(lastRound){
             $('#turnFormRaise a').removeClass('inactive');
             $('#turnFormLie a').removeClass('inactive');
             $('#turnFormPerfect a').removeClass('inactive');
+
+            $('#lastRaiseContainer').hide();
+            $('#lastRaiseLabel').hide();
+            $('#lastRaise').empty();
 
             toggleRoundOver = false;
             $('#roundResult').delay(20000).hide(1000);
