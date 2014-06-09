@@ -19,6 +19,7 @@ var deadPlayers = Array();
 var playerDead = false;
 var gameEnded = false;
 var timeLeft = 120;
+var isPlayersTurn = false;
 var divisor_for_minutes = 0;
 var divisor_for_seconds = 0;
 
@@ -102,6 +103,11 @@ setInterval(function(){
         --timeLeft;
     }
     updateTimeLeft(timeLeft);
+    if(isPlayersTurn && timeLeft % 2){
+        $('title').text('Your turn!');
+    } else {
+        $('title').text('Lie to Win');
+    }
 }, 1000);
 
 function closeLightBox(){
@@ -426,6 +432,7 @@ function updatePlayersTurn(player){
     }
 
     if(currentPayersTurn == username){
+        isPlayersTurn = true;
         $('#timeLeftPlayerName').text('your');
         $('#myDiceRow').addClass('playersTurn');
         if(userInControl){
@@ -457,6 +464,7 @@ function updatePlayersTurn(player){
         }
 
     } else {
+        isPlayersTurn = false;
         $('#timeLeftPlayerName').text(player + '\'s');
         $('#myDiceRow').removeClass('playersTurn');
         $('#turnForm').hide();
