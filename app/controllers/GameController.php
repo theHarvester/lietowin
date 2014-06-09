@@ -127,7 +127,7 @@ class GameController extends BaseController
                     $move->loser_id = $game->user_turn;
                     $move->round = $game->current_round;
                     $move->save();
-                    $this->endRound($gameId, $game->user_turn, $diceAvailable);
+                    $this->endRound($gameId, $game->user_turn, $diceAvailable, true);
                 }
 
                 $lostPlayers = GamePlayer::where('game_id', '=', $gameId)
@@ -259,47 +259,7 @@ class GameController extends BaseController
                     ->get()
                     ->toArray();
 
-
-                $turnOrder = explode(',', $game['turn_order']);
-                $turnKey = array_search($userId, $turnOrder);
-                If ((count($turnOrder) - 1) == $turnKey) {
-                    $nextPlayerId = $turnOrder[0];
-                } else {
-                    $nextPlayerId = $turnOrder[$turnKey + 1];
-                }
-
-                $gamePlayers = GamePlayer::where('game_id', '=', $gameId)
-                    ->where('still_playing', '=', true)
-                    ->get();
-                $activePlayers = array();
-                $seekNextActive = true;
-
-                foreach ($gamePlayers as $player) {
-                    if ($nextPlayerId == $player->user_id) {
-                        $seekNextActive = false;
-                    }
-                    $activePlayers[] = $player->user_id;
-                }
-
-                $startLooking = false;
-
-                // this has to be a while because it needs to start searching in turn order so it needs to loop
-                while ($seekNextActive) {
-                    foreach ($turnOrder as $userTurnId) {
-                        // var_dump($userTurnId, $startLooking, '--------------');
-                        if ($startLooking) {
-                            if (in_array($userTurnId, $activePlayers)) {
-                                $seekNextActive = false;
-                                $nextPlayerId = $userTurnId;
-                                break;
-                            }
-                        } else {
-                            if ($userTurnId == $nextPlayerId) {
-                                $startLooking = true;
-                            }
-                        }
-                    }
-                }
+                $nextPlayerId = $this->changeTurn($gameId);
 
                 switch (Input::get('call')) {
                     case 'raise':
@@ -423,7 +383,68 @@ class GameController extends BaseController
         }
     }
 
-    private function endRound($gameId, $playerLoseId, $diceAvailable)
+    private function changeTurn($gameId){
+        $gameId = Session::get('game_id');
+        $displayArr = array();
+
+        if ($gameId != null) {
+            $game = Game::find($gameId)->toArray();
+            $gameObj = Game::find($gameId);
+
+            if ($game['active'] == true) {
+                //make the move
+                $turnOrder = explode(',', $game['turn_order']);
+                $turnKey = array_search($gameObj->user_turn, $turnOrder);
+                If ((count($turnOrder) - 1) == $turnKey) {
+                    $nextPlayerId = $turnOrder[0];
+                } else {
+                    $nextPlayerId = $turnOrder[$turnKey + 1];
+                }
+
+                $gamePlayers = GamePlayer::where('game_id', '=', $gameId)
+                    ->where('still_playing', '=', true)
+                    ->get();
+                $activePlayers = array();
+                $seekNextActive = true;
+
+                foreach ($gamePlayers as $player) {
+                    if ($nextPlayerId == $player->user_id) {
+                        $seekNextActive = false;
+                    }
+                    $activePlayers[] = $player->user_id;
+                }
+
+                $startLooking = false;
+
+                // this has to be a while because it needs to start searching in turn order so it needs to loop
+                while ($seekNextActive) {
+                    foreach ($turnOrder as $userTurnId) {
+                        // var_dump($userTurnId, $startLooking, '--------------');
+                        if ($startLooking) {
+                            if (in_array($userTurnId, $activePlayers)) {
+                                $seekNextActive = false;
+                                $nextPlayerId = $userTurnId;
+                                break;
+                            }
+                        } else {
+                            if ($userTurnId == $nextPlayerId) {
+                                $startLooking = true;
+                            }
+                        }
+                    }
+                }
+            }
+            $gameObj->user_turn = $nextPlayerId;
+            $gameObj->save();
+        }
+        if(isset($nextPlayerId)) {
+            return $nextPlayerId;
+        } else {
+            return 0;
+        }
+    }
+
+    private function endRound($gameId, $playerLoseId, $diceAvailable, $playerTimeout = false)
     {
         $gameObj = Game::find($gameId);
         $gameArr = $gameObj->toArray();
@@ -452,6 +473,14 @@ class GameController extends BaseController
                 $diceFace[] = rand(1, 6);
             }
             $diceRoll->dice_face = implode(",", $diceFace);
+
+            if($playerTimeout && $playerLoseId == $value['user_id']){
+                $diceRoll->dice_available = 0;
+                $diceRoll->dice_face = '';
+                $this->changeTurn($gameId);
+                $this->playerLosesGame($playerLoseId);
+            }
+
             $diceRoll->save();
         }
         return true;
@@ -469,7 +498,7 @@ class GameController extends BaseController
         $activePlayers = GamePlayer::where('game_id', '=', $gameId)
             ->where('still_playing', '=', true)
             ->get();
-        var_dump('WE GOT A loser OVER HERE', $loserId, $activePlayers->toArray());
+
         if (count($activePlayers) == 1) {
             foreach ($activePlayers as $winningPlayer) {
                 $this->declareWinner($winningPlayer->user_id);
